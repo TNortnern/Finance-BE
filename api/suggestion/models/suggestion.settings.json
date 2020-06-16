@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "suggestions",
+  "info": {
+    "name": "Suggestion"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "subject": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "dealURL": {
+      "type": "string"
+    },
+    "filterURL": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    }
+  }
+}

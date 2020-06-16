@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_filters_filters",
+  "info": {
+    "name": "filter",
+    "icon": "adjust"
+  },
+  "options": {},
+  "attributes": {
+    "filters": {
+      "collection": "filter"
+    }
+  }
+}

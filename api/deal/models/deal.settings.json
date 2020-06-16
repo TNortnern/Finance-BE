@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "deals",
+  "info": {
+    "name": "Deal"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "filters": {
+      "via": "deals",
+      "collection": "filter"
+    },
+    "status": {
+      "via": "deal",
+      "model": "status-types"
+    }
+  }
+}

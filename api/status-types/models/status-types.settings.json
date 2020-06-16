@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "status_types",
+  "info": {
+    "name": "StatusTypes"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "value": {
+      "type": "string"
+    },
+    "deal": {
+      "model": "deal",
+      "via": "status"
+    }
+  }
+}

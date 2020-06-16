@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "filters",
+  "info": {
+    "name": "Filter"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "deals": {
+      "collection": "deal",
+      "via": "filters",
+      "dominant": true
+    },
+    "approved": {
+      "type": "boolean"
+    }
+  }
+}
