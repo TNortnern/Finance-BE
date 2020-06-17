@@ -1,8 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "status_types",
+  "collectionName": "rates",
   "info": {
-    "name": "StatusTypes"
+    "name": "Rate"
   },
   "options": {
     "increments": true,
@@ -10,7 +10,7 @@
   },
   "attributes": {
     "value": {
-      "type": "string"
+      "type": "decimal"
     }
   }
 }

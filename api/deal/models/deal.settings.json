@@ -12,16 +12,17 @@
     "title": {
       "type": "string"
     },
-    "description": {
-      "type": "richtext"
+    "filter_list": {
+      "type": "component",
+      "repeatable": true,
+      "component": "filters.filter"
     },
-    "filters": {
-      "via": "deals",
-      "collection": "filter"
+    "approved": {
+      "type": "boolean",
+      "default": false
     },
-    "status": {
-      "via": "deal",
-      "model": "status-types"
+    "filter_list_details": {
+      "collection": "filter-list-details"
     }
   }
 }

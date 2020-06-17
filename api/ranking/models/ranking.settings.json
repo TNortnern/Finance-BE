@@ -9,15 +9,13 @@
     "timestamps": true
   },
   "attributes": {
-    "list": {
-      "type": "component",
-      "repeatable": false,
-      "component": "filters.filter"
-    },
     "user": {
       "plugin": "users-permissions",
       "model": "user",
       "via": "rankings"
+    },
+    "filters": {
+      "collection": "filter"
     }
   }
 }

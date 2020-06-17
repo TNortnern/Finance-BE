@@ -6,8 +6,14 @@
   },
   "options": {},
   "attributes": {
-    "filters": {
-      "collection": "filter"
+    "filter": {
+      "model": "filter"
+    },
+    "value": {
+      "type": "string"
+    },
+    "status": {
+      "model": "status-types"
     }
   }
 }

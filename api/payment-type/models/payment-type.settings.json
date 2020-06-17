@@ -1,15 +1,15 @@
 {
   "kind": "collectionType",
-  "collectionName": "status_types",
+  "collectionName": "payment_types",
   "info": {
-    "name": "StatusTypes"
+    "name": "PaymentType"
   },
   "options": {
     "increments": true,
     "timestamps": true
   },
   "attributes": {
-    "value": {
+    "name": {
       "type": "string"
     }
   }

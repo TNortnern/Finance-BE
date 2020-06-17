@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_subscriptions",
+  "info": {
+    "name": "UserSubscription"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "duration": {
+      "type": "integer"
+    },
+    "payment_type": {
+      "model": "payment-type"
+    },
+    "subscription_rate": {
+      "model": "rate"
+    }
+  }
+}

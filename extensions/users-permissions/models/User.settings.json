@@ -70,6 +70,9 @@
     "views_left": {
       "type": "integer",
       "default": 5
+    },
+    "name": {
+      "type": "string"
     }
   }
 }

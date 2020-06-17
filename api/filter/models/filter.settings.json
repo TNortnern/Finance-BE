@@ -11,14 +11,6 @@
   "attributes": {
     "name": {
       "type": "string"
-    },
-    "deals": {
-      "collection": "deal",
-      "via": "filters",
-      "dominant": true
-    },
-    "approved": {
-      "type": "boolean"
     }
   }
 }
