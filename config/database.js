@@ -11,6 +11,7 @@ module.exports = ({ env }) => ({
         database: env("DATABASE_NAME", "strapi"),
         username: env("DATABASE_USERNAME", "strapi"),
         password: env("DATABASE_PASSWORD", "strapi"),
+        uri: env("DATABASE_URI"),
       },
       options: {
         authenticationDatabase: env("AUTHENTICATION_DATABASE"),
