@@ -23,6 +23,9 @@
     "filter": {
       "model": "filter",
       "via": "filter_list_items"
+    },
+    "type": {
+      "model": "filter-value-types"
     }
   }
 }

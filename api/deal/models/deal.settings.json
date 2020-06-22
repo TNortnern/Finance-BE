@@ -19,6 +19,11 @@
     "filters": {
       "via": "deal",
       "collection": "filter-list-item"
+    },
+    "author": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "deal"
     }
   }
 }

@@ -73,6 +73,10 @@
     },
     "name": {
       "type": "string"
+    },
+    "deal": {
+      "via": "author",
+      "model": "deal"
     }
   }
 }
