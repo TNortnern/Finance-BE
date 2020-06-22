@@ -12,17 +12,13 @@
     "title": {
       "type": "string"
     },
-    "filter_list": {
-      "type": "component",
-      "repeatable": true,
-      "component": "filters.filter"
-    },
     "approved": {
       "type": "boolean",
       "default": false
     },
-    "filter_list_details": {
-      "collection": "filter-list-details"
+    "filters": {
+      "via": "deal",
+      "collection": "filter-list-item"
     }
   }
 }

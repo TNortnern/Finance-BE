@@ -2,48 +2,48 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/filter-list-details",
-      "handler": "filter-list-details.find",
+      "path": "/filter-list-items",
+      "handler": "filter-list-item.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/filter-list-details/count",
-      "handler": "filter-list-details.count",
+      "path": "/filter-list-items/count",
+      "handler": "filter-list-item.count",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/filter-list-details/:id",
-      "handler": "filter-list-details.findOne",
+      "path": "/filter-list-items/:id",
+      "handler": "filter-list-item.findOne",
       "config": {
         "policies": []
       }
     },
     {
       "method": "POST",
-      "path": "/filter-list-details",
-      "handler": "filter-list-details.create",
+      "path": "/filter-list-items",
+      "handler": "filter-list-item.create",
       "config": {
         "policies": []
       }
     },
     {
       "method": "PUT",
-      "path": "/filter-list-details/:id",
-      "handler": "filter-list-details.update",
+      "path": "/filter-list-items/:id",
+      "handler": "filter-list-item.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/filter-list-details/:id",
-      "handler": "filter-list-details.delete",
+      "path": "/filter-list-items/:id",
+      "handler": "filter-list-item.delete",
       "config": {
         "policies": []
       }

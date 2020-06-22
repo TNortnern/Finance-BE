@@ -11,6 +11,10 @@
   "attributes": {
     "value": {
       "type": "string"
+    },
+    "filter_list_items": {
+      "via": "status",
+      "collection": "filter-list-item"
     }
   }
 }

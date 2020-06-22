@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "filter_list_items",
+  "info": {
+    "name": "filter_list_item"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "value": {
+      "type": "string"
+    },
+    "status": {
+      "model": "status-types",
+      "via": "filter_list_items"
+    },
+    "deal": {
+      "model": "deal",
+      "via": "filters"
+    },
+    "filter": {
+      "model": "filter",
+      "via": "filter_list_items"
+    }
+  }
+}

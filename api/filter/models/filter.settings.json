@@ -11,6 +11,10 @@
   "attributes": {
     "name": {
       "type": "string"
+    },
+    "filter_list_items": {
+      "via": "filter",
+      "collection": "filter-list-item"
     }
   }
 }
