@@ -27,7 +27,6 @@ module.exports = {
     },
     // Called after an entry is created
     async afterCreate(result, data) {
-      // console.log('result', result)
       const rankings = await await strapi.query("ranking-item").find({
         id_in: result.rankings,
       });
@@ -42,7 +41,6 @@ module.exports = {
           }
         );
       }
-      // console.log('rankings', rankings)
     },
     async beforeUpdate(params, data) {
       if (!data.rankings.length) throw new Error("A ranking item is required");
@@ -145,9 +143,7 @@ module.exports = {
       }
     },
     // Called after an entry is created
-    async afterUpdate(result, params, data) {},
     async afterDelete(result, params) {
-      console.log("result", result);
       const rankings = result.rankings.map((r) => r.id);
       if (rankings.length) {
         const findRanks = await strapi.query("ranking-item").find({

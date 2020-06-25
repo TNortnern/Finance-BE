@@ -10,7 +10,6 @@ module.exports = {
     // Called before an entry is created
     async beforeCreate(data) {
       if (data.deals && data.deals.length) {
-          console.log('got here create')
         let sizeTotal = 0;
         data.dealAmount = data.deals.length;
         const allDeals = await strapi.query("deal").find({ id_in: data.deals });
@@ -23,7 +22,6 @@ module.exports = {
     // Called after an entry is created
     async beforeUpdate(params, data) {
       if (data.deals && data.deals.length) {
-          console.log('got here update')
         let sizeTotal = 0;
         data.dealAmount = data.deals.length;
         const allDeals = await strapi.query("deal").find({ id_in: data.deals });
