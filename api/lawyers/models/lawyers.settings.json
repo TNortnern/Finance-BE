@@ -1,15 +1,19 @@
 {
   "kind": "collectionType",
-  "collectionName": "filter_value_types",
+  "collectionName": "lawyers",
   "info": {
-    "name": "Filter_Value_Types"
+    "name": "Lawyers"
   },
   "options": {
     "increments": true,
     "timestamps": true
   },
   "attributes": {
-    "value": {
+    "deals": {
+      "via": "lawyer",
+      "collection": "deal"
+    },
+    "name": {
       "type": "string"
     }
   }

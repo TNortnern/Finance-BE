@@ -9,13 +9,17 @@
     "timestamps": true
   },
   "attributes": {
-    "user": {
-      "plugin": "users-permissions",
-      "model": "user",
-      "via": "rankings"
+    "name": {
+      "type": "string"
     },
-    "filters": {
-      "collection": "filter"
+    "deals": {
+      "collection": "deal",
+      "via": "rankings",
+      "dominant": true
+    },
+    "items": {
+      "via": "ranking",
+      "collection": "ranking-item"
     }
   }
 }

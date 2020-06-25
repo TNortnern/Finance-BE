@@ -57,10 +57,6 @@
       "type": "boolean",
       "default": false
     },
-    "rankings": {
-      "via": "user",
-      "model": "ranking"
-    },
     "company_name": {
       "type": "string"
     },

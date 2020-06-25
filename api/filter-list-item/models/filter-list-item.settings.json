@@ -17,15 +17,12 @@
       "via": "filter_list_items"
     },
     "deal": {
-      "model": "deal",
-      "via": "filters"
+      "via": "filters",
+      "model": "deal"
     },
     "filter": {
       "model": "filter",
       "via": "filter_list_items"
-    },
-    "type": {
-      "model": "filter-value-types"
     }
   }
 }

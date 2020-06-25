@@ -1,0 +1,60 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/ranking-items",
+      "handler": "ranking-item.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/ranking-items/count",
+      "handler": "ranking-item.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/ranking-items/countstuff",
+      "handler": "ranking-item.rankCount",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/ranking-items/:id",
+      "handler": "ranking-item.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/ranking-items",
+      "handler": "ranking-item.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/ranking-items/:id",
+      "handler": "ranking-item.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/ranking-items/:id",
+      "handler": "ranking-item.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
