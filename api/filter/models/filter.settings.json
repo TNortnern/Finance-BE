@@ -15,6 +15,10 @@
     "filter_list_items": {
       "via": "filter",
       "collection": "filter-list-item"
+    },
+    "category": {
+      "via": "filters",
+      "model": "filter-category"
     }
   }
 }
