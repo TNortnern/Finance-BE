@@ -1,8 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "filter_categories",
+  "collectionName": "deal_categories",
   "info": {
-    "name": "FilterCategory"
+    "name": "DealCategory"
   },
   "options": {
     "increments": true,
@@ -14,6 +14,10 @@
     },
     "filters": {
       "collection": "filter",
+      "via": "category"
+    },
+    "rankings": {
+      "collection": "ranking",
       "via": "category"
     }
   }

@@ -20,6 +20,10 @@
     "items": {
       "via": "ranking",
       "collection": "ranking-item"
+    },
+    "category": {
+      "via": "rankings",
+      "model": "deal-category"
     }
   }
 }

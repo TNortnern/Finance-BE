@@ -2,48 +2,48 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/filter-categories",
-      "handler": "filter-category.find",
+      "path": "/deal-categories",
+      "handler": "deal-category.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/filter-categories/count",
-      "handler": "filter-category.count",
+      "path": "/deal-categories/count",
+      "handler": "deal-category.count",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/filter-categories/:id",
-      "handler": "filter-category.findOne",
+      "path": "/deal-categories/:id",
+      "handler": "deal-category.findOne",
       "config": {
         "policies": []
       }
     },
     {
       "method": "POST",
-      "path": "/filter-categories",
-      "handler": "filter-category.create",
+      "path": "/deal-categories",
+      "handler": "deal-category.create",
       "config": {
         "policies": []
       }
     },
     {
       "method": "PUT",
-      "path": "/filter-categories/:id",
-      "handler": "filter-category.update",
+      "path": "/deal-categories/:id",
+      "handler": "deal-category.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/filter-categories/:id",
-      "handler": "filter-category.delete",
+      "path": "/deal-categories/:id",
+      "handler": "deal-category.delete",
       "config": {
         "policies": []
       }
