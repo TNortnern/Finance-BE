@@ -12,13 +12,13 @@
     "name": {
       "type": "string"
     },
-    "filter_list_items": {
-      "via": "filter",
-      "collection": "filter-list-item"
-    },
     "category": {
       "via": "filters",
       "model": "deal-category"
+    },
+    "filter_itemz": {
+      "via": "filter",
+      "collection": "filter-item"
     }
   }
 }

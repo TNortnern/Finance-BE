@@ -12,9 +12,9 @@
     "value": {
       "type": "string"
     },
-    "filter_list_items": {
+    "filters": {
       "via": "status",
-      "collection": "filter-list-item"
+      "collection": "filter-item"
     }
   }
 }

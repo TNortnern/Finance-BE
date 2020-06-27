@@ -16,30 +16,23 @@
       "type": "boolean",
       "default": false
     },
-    "filters": {
-      "collection": "filter-list-item",
-      "via": "deal"
-    },
     "author": {
       "plugin": "users-permissions",
       "model": "user",
       "via": "deal"
     },
     "rankings": {
-      "via": "deals",
       "collection": "ranking-item",
+      "via": "deals",
       "dominant": true
-    },
-    "lawyer": {
-      "model": "lawyers",
-      "via": "deals"
     },
     "size": {
       "type": "integer",
       "default": 0
     },
-    "randomfield": {
-      "type": "string"
+    "filters": {
+      "via": "deals",
+      "collection": "filter-item"
     }
   }
 }

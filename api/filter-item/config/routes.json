@@ -2,48 +2,48 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/lawyers",
-      "handler": "lawyers.find",
+      "path": "/filter-items",
+      "handler": "filter-item.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/lawyers/count",
-      "handler": "lawyers.count",
+      "path": "/filter-items/count",
+      "handler": "filter-item.count",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/lawyers/:id",
-      "handler": "lawyers.findOne",
+      "path": "/filter-items/:id",
+      "handler": "filter-item.findOne",
       "config": {
         "policies": []
       }
     },
     {
       "method": "POST",
-      "path": "/lawyers",
-      "handler": "lawyers.create",
+      "path": "/filter-items",
+      "handler": "filter-item.create",
       "config": {
         "policies": []
       }
     },
     {
       "method": "PUT",
-      "path": "/lawyers/:id",
-      "handler": "lawyers.update",
+      "path": "/filter-items/:id",
+      "handler": "filter-item.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/lawyers/:id",
-      "handler": "lawyers.delete",
+      "path": "/filter-items/:id",
+      "handler": "filter-item.delete",
       "config": {
         "policies": []
       }
