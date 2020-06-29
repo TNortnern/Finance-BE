@@ -31,8 +31,11 @@
       "default": 0
     },
     "filters": {
-      "via": "deals",
-      "collection": "filter-item"
+      "collection": "filter-item",
+      "via": "deals"
+    },
+    "comments": {
+      "type": "string"
     }
   }
 }

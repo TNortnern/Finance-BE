@@ -17,8 +17,8 @@
       "via": "filter_itemz"
     },
     "deals": {
-      "collection": "deal",
       "via": "filters",
+      "collection": "deal",
       "dominant": true
     },
     "status": {
