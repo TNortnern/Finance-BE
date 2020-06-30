@@ -125,6 +125,7 @@ module.exports = {
               }
             }
           }
+          return deal
         },
       },
     },

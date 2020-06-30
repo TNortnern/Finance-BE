@@ -22,13 +22,14 @@
       "via": "deal"
     },
     "rankings": {
-      "via": "deals",
       "collection": "ranking-item",
+      "via": "deals",
       "dominant": true
     },
     "size": {
       "type": "integer",
-      "default": 0
+      "default": 0,
+      "min": 0
     },
     "filters": {
       "collection": "filter-item",
@@ -38,8 +39,8 @@
       "type": "string"
     },
     "entries": {
-      "via": "deal",
-      "collection": "deal-entry"
+      "collection": "deal-entry",
+      "via": "deal"
     }
   }
 }

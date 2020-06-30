@@ -10,8 +10,8 @@
   },
   "attributes": {
     "deal": {
-      "model": "deal",
-      "via": "entries"
+      "via": "entries",
+      "model": "deal"
     },
     "ranking_item": {
       "via": "entries",
