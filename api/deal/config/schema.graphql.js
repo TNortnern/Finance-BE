@@ -9,12 +9,12 @@ const createEntryFilter = async (filter, value) => {
     filter_item = await strapi.query("filter-item").create({
       filter,
       value,
-      deal
+      deal: deal.id
     });
   }
   return await strapi.query("deal-entry").create({
     filter_item,
-    deal
+    deal: deal.id
   });
 };
 const createEntryRanking = async (ranking, value) => {
@@ -23,12 +23,12 @@ const createEntryRanking = async (ranking, value) => {
     ranking_item = await strapi.query("ranking-item").create({
       ranking,
       value,
-      deal
+      deal: deal.id
     });
   }
   return await strapi.query("deal-entry").create({
     ranking_item,
-    deal
+    deal: deal.id
   });
 };
 
