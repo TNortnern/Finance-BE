@@ -32,11 +32,14 @@ module.exports = {
     //   }
     // },
     async beforeDelete(params) {
-      const deal = await strapi.query("ranking-item").findOne({ id: params.id });
+      // console.log('params', params)
+      const ranking = await strapi.query("ranking-item").findOne({ id: params._id });
+      // console.log('ranking', ranking)
       const entries = await strapi
         .query("deal-entry")
-        .find({ ranking_item: params.id });
+        .find({ ranking_item: ranking.id });
       for await (const entry of entries) {
+        console.log('entry', entry)
         await strapi.query("deal-entry").delete({
           id: entry.id,
         });

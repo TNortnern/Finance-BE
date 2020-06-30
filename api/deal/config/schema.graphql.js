@@ -2,12 +2,31 @@ const { sanitizeEntity } = require("strapi-utils");
 const capitalize = (item) => {
   return item.charAt(0).toUpperCase() + item.slice(1);
 };
-const createFilter = async (filter, value) => {
-  await strapi.query('filter-item').create({
-    value,
-    filter
-  })
-}
+const createEntryFilter = async (filter, value) => {
+  let filter_item = await strapi.query("filter-item").findOne({ value });
+  if (!filter_item) {
+    filter_item = await strapi.query("filter-item").create({
+      filter,
+      value,
+    });
+  }
+  return await strapi.query("deal-entry").create({
+    filter_item,
+  });
+};
+const createEntryRanking = async (ranking, value) => {
+  let ranking_item = await strapi.query("ranking-item").findOne({ value });
+  if (!ranking_item) {
+    ranking_item = await strapi.query("ranking-item").create({
+      ranking,
+      value,
+    });
+  }
+  return await strapi.query("deal-entry").create({
+    ranking_item,
+  });
+};
+
 module.exports = {
   mutation: `
      baseCreateDeal(title: String, dealData: JSON, author: String): Deal
@@ -27,16 +46,35 @@ module.exports = {
           //   approved: true,
           // });
           const rankings = [
-            "Lawyer",
-            "Lender",
-            "Debt advisor",
-            "Sponsor",
-            "Sponsor counsel",
-            "Lender counsel",
+            {
+              id: "5ef2099480bf93656c8fdd06",
+              name: "Lawyer",
+            },
+            {
+              id: "5ef782a0eaa67c240465a46d",
+              name: "Lender",
+            },
+            {
+              id: "5ef782a8eaa67c240465a46e",
+              name: "Debt advisor",
+            },
+            {
+              id: "5ef782aceaa67c240465a46f",
+              name: "Sponsor",
+            },
+            {
+              id: "5ef782b4eaa67c240465a470",
+              name: "Sponsor counsel",
+            },
+            {
+              id: "5ef783a9eaa67c240465a471",
+              name: "Lender counsel",
+            },
           ];
           const filters = await strapi.query("filter").find({});
           // console.log('opt', dealData)
-          const isRanking = (item) => rankings.includes(item);
+          const isRanking = (item) =>
+            rankings.find((rank) => rank.name === item);
           let rankIds = [];
           let filterIds = [];
           for (let x in dealData) {
@@ -53,29 +91,41 @@ module.exports = {
               if (x.includes("_")) {
                 const splitup = x.split("_");
                 const reprinted = `${splitup[0]} ${splitup[1]}`;
-                ranking = isRanking(reprinted)
+                ranking = isRanking(reprinted);
                 if (ranking) {
-                  console.log('ranking', ranking)
+                  createEntryRanking(ranking.id, value);
+                  console.log("ranking", ranking);
                   //
                 } else {
-                  filter = filters.find((filt) => filt.name === reprinted).id;
-                  console.log('filter', filter)
+                  filter = filters.find((filt) => filt.name === reprinted);
+                  if (filter && filter.id) {
+                    createEntryFilter(filter.id, value);
+                  } else {
+                    console.log("value cannot be created", value);
+                  }
+                  // console.log('filter', filter.id)
                 }
                 // console.log('reprinted', reprinted)
               } else {
-                if (isRanking(x)) {
+                ranking = isRanking(x);
+                if (ranking) {
+                  createEntryRanking(ranking.id, value);
+                  console.log("gets here", ranking);
                 } else {
-                  filter = filters.find((filt) => filt.name === x);
+                  // we used a special name for this on the frontend so we need to convert so that the filter can be found properly
+                  if (x === "Above10") x = "Is EBITDA above 10m?";
+                  filter = filters.find(
+                    (filt) => filt.name.toLowerCase() === x.toLowerCase()
+                  );
+                  if (filter && filter.id) {
+                    createEntryFilter(filter.id, value);
+                  } else {
+                    console.log("value cannot be created", x);
+                  }
                 }
               }
             }
-            // console.log('DealData[x]', dealData[x.toString()])
           }
-          console.log("size", size);
-          console.log("comments", comments);
-          // const rank = await strapi.query('ranking').findOne({ name: ranking })
-          // console.log('heyt')
-          // console.log('rank', rank.id)
         },
       },
     },

@@ -10,10 +10,10 @@ module.exports = {
     async beforeDelete(params) {
       const deal = await strapi
         .query("filter-item")
-        .findOne({ id: params.id });
+        .findOne({ id: params._id });
       const entries = await strapi
         .query("deal-entry")
-        .find({ filter_item: params.id });
+        .find({ filter_item: params._id });
       for await (const entry of entries) {
         await strapi.query("deal-entry").delete({
           id: entry.id,
