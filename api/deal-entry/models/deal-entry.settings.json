@@ -14,8 +14,8 @@
       "via": "entries"
     },
     "ranking_item": {
-      "model": "ranking-item",
-      "via": "entries"
+      "via": "entries",
+      "model": "ranking-item"
     },
     "filter_item": {
       "model": "filter-item",

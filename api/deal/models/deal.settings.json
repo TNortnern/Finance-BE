@@ -22,8 +22,8 @@
       "via": "deal"
     },
     "rankings": {
-      "collection": "ranking-item",
       "via": "deals",
+      "collection": "ranking-item",
       "dominant": true
     },
     "size": {

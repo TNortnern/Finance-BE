@@ -43,12 +43,14 @@ module.exports = {
     //   }
     // },
     async beforeUpdate(params, data) {
-      const deal = await strapi.query("deal").findOne({ id: params.id });
+      const deal = await strapi.query("deal").findOne({ id: params._id });
+      if (params._id !== deal.id) {
+        return;
+      }
       const entries = await strapi
         .query("deal-entry")
         .find({ deal: params.id });
       const entryIds = entries.map((entry) => entry.id);
-      console.log("deal.entries", entryIds);
       if (JSON.stringify(data.entries) !== JSON.stringify(entryIds)) {
         for await (const entry of entries) {
           if (!data.entries.includes(entry)) {
@@ -60,15 +62,13 @@ module.exports = {
       }
     },
     async beforeDelete(params) {
-      const deal = await strapi.query("deal").findOne({ id: params.id });
-      const entries = await strapi
-        .query("deal-entry")
-        .find({ deal: params.id });
-      for await (const entry of entries) {
-        await strapi.query("deal-entry").delete({
-          id: entry.id,
-        });
+      const deal = await strapi.query("deal").findOne({ id: params._id });
+      if (params._id !== deal.id) {
+        return;
       }
+      await strapi.query("deal-entry").delete({
+        deal: deal.id,
+      });
     },
   },
 };

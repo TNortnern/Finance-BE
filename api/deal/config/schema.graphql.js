@@ -1,4 +1,5 @@
 const { sanitizeEntity } = require("strapi-utils");
+let deal
 const capitalize = (item) => {
   return item.charAt(0).toUpperCase() + item.slice(1);
 };
@@ -8,10 +9,12 @@ const createEntryFilter = async (filter, value) => {
     filter_item = await strapi.query("filter-item").create({
       filter,
       value,
+      deal
     });
   }
   return await strapi.query("deal-entry").create({
     filter_item,
+    deal
   });
 };
 const createEntryRanking = async (ranking, value) => {
@@ -20,31 +23,34 @@ const createEntryRanking = async (ranking, value) => {
     ranking_item = await strapi.query("ranking-item").create({
       ranking,
       value,
+      deal
     });
   }
   return await strapi.query("deal-entry").create({
     ranking_item,
+    deal
   });
 };
 
 module.exports = {
   mutation: `
-     baseCreateDeal(title: String, dealData: JSON, author: String): Deal
+     baseCreateDeal(title: String, dealData: JSON, author: String, approved: Boolean): Deal
   `,
   resolver: {
     Mutation: {
       baseCreateDeal: {
         resolverOf: "application::deal.deal.create",
-        resolver: async (parent, { dealData, title }, { context }) => {
+        resolver: async (parent, { dealData, title, approved, author }, { context }) => {
           // const result = await strapi.query("filter-item").model.find().distinct('value');
           let size = dealData.size;
           let comments = dealData.comments;
-          // const deal = await strapi.query("deal").create({
-          //   title,
-          //   size,
-          //   comments,
-          //   approved: true,
-          // });
+          deal = await strapi.query("deal").create({
+            title,
+            size,
+            comments,
+            approved,
+            author
+          });
           const rankings = [
             {
               id: "5ef2099480bf93656c8fdd06",
@@ -72,7 +78,6 @@ module.exports = {
             },
           ];
           const filters = await strapi.query("filter").find({});
-          // console.log('opt', dealData)
           const isRanking = (item) =>
             rankings.find((rank) => rank.name === item);
           let rankIds = [];
@@ -94,23 +99,18 @@ module.exports = {
                 ranking = isRanking(reprinted);
                 if (ranking) {
                   createEntryRanking(ranking.id, value);
-                  console.log("ranking", ranking);
                   //
                 } else {
                   filter = filters.find((filt) => filt.name === reprinted);
                   if (filter && filter.id) {
                     createEntryFilter(filter.id, value);
                   } else {
-                    console.log("value cannot be created", value);
                   }
-                  // console.log('filter', filter.id)
                 }
-                // console.log('reprinted', reprinted)
               } else {
                 ranking = isRanking(x);
                 if (ranking) {
                   createEntryRanking(ranking.id, value);
-                  console.log("gets here", ranking);
                 } else {
                   // we used a special name for this on the frontend so we need to convert so that the filter can be found properly
                   if (x === "Above10") x = "Is EBITDA above 10m?";
@@ -120,7 +120,6 @@ module.exports = {
                   if (filter && filter.id) {
                     createEntryFilter(filter.id, value);
                   } else {
-                    console.log("value cannot be created", x);
                   }
                 }
               }
