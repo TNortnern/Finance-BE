@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "deal_entries",
+  "info": {
+    "name": "Deal_entry"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "deal": {
+      "model": "deal",
+      "via": "entries"
+    },
+    "ranking_item": {
+      "model": "ranking-item",
+      "via": "entries"
+    },
+    "filter_item": {
+      "model": "filter-item",
+      "via": "entries"
+    },
+    "status_type": {
+      "model": "status-types",
+      "via": "entries"
+    }
+  }
+}

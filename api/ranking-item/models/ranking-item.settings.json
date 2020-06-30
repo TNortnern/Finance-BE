@@ -29,6 +29,10 @@
       "type": "integer",
       "required": false,
       "default": 0
+    },
+    "entries": {
+      "via": "ranking_item",
+      "collection": "deal-entry"
     }
   }
 }

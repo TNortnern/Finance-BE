@@ -13,8 +13,7 @@
       "type": "string"
     },
     "filter": {
-      "model": "filter",
-      "via": "filter_itemz"
+      "model": "filter"
     },
     "deals": {
       "via": "filters",
@@ -24,6 +23,10 @@
     "status": {
       "model": "status-types",
       "via": "filters"
+    },
+    "entries": {
+      "via": "filter_item",
+      "collection": "deal-entry"
     }
   }
 }

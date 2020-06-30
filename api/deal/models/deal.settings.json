@@ -36,6 +36,10 @@
     },
     "comments": {
       "type": "string"
+    },
+    "entries": {
+      "via": "deal",
+      "collection": "deal-entry"
     }
   }
 }
