@@ -1,20 +1,20 @@
 const { sanitizeEntity } = require("strapi-utils");
-let deal
+let deal;
 const capitalize = (item) => {
   return item.charAt(0).toUpperCase() + item.slice(1);
 };
 const createEntryFilter = async (filter, value) => {
   let filter_item = await strapi.query("filter-item").findOne({ value });
-  if (!filter_item) {
+  if (!filter_item || filter_item.filter.name.toLowerCase() !== filter.name.toLowerCase()) {
     filter_item = await strapi.query("filter-item").create({
       filter,
       value,
-      deal: deal.id
+      deal: deal.id,
     });
   }
   return await strapi.query("deal-entry").create({
     filter_item,
-    deal: deal.id
+    deal: deal.id,
   });
 };
 const createEntryRanking = async (ranking, value) => {
@@ -23,12 +23,12 @@ const createEntryRanking = async (ranking, value) => {
     ranking_item = await strapi.query("ranking-item").create({
       ranking,
       value,
-      deal: deal.id
+      deal: deal.id,
     });
   }
   return await strapi.query("deal-entry").create({
     ranking_item,
-    deal: deal.id
+    deal: deal.id,
   });
 };
 
@@ -40,7 +40,11 @@ module.exports = {
     Mutation: {
       baseCreateDeal: {
         resolverOf: "application::deal.deal.create",
-        resolver: async (parent, { dealData, title, approved, author }, { context }) => {
+        resolver: async (
+          parent,
+          { dealData, title, approved, author },
+          { context }
+        ) => {
           // const result = await strapi.query("filter-item").model.find().distinct('value');
           let size = dealData.size;
           let comments = dealData.comments;
@@ -49,7 +53,7 @@ module.exports = {
             size,
             comments,
             approved,
-            author
+            author,
           });
           const rankings = [
             {
@@ -102,8 +106,8 @@ module.exports = {
                   //
                 } else {
                   filter = filters.find((filt) => filt.name === reprinted);
-                  if (filter && filter.id) {
-                    createEntryFilter(filter.id, value);
+                  if (filter && filter) {
+                    createEntryFilter(filter, value);
                   } else {
                   }
                 }
@@ -117,15 +121,15 @@ module.exports = {
                   filter = filters.find(
                     (filt) => filt.name.toLowerCase() === x.toLowerCase()
                   );
-                  if (filter && filter.id) {
-                    createEntryFilter(filter.id, value);
+                  if (filter && filter) {
+                    createEntryFilter(filter, value);
                   } else {
                   }
                 }
               }
             }
           }
-          return deal
+          return deal;
         },
       },
     },

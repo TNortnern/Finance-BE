@@ -59,15 +59,15 @@ module.exports = {
         for await (const e of entriesWithRanks) {
           await strapi
             .query("ranking-item")
-            .update({ id: e.ranking_item.id }, { size_total: e.ranking_item.size_total + 20 });
+            .update(
+              { id: e.ranking_item.id },
+              { size_total: e.ranking_item.size_total + value }
+            );
         }
       }
     },
     async beforeDelete(params) {
       const deal = await strapi.query("deal").findOne({ id: params._id });
-      if (params._id !== deal.id) {
-        return;
-      }
       await strapi.query("deal-entry").delete({
         deal: deal.id,
       });

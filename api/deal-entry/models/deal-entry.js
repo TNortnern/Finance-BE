@@ -73,6 +73,9 @@ module.exports = {
       const entry = await strapi
         .query("deal-entry")
         .findOne({ id: params._id });
+        if (!entry) {
+            return
+        }
       if (entry.ranking_item) {
         if (!entry.deal) {
           return;
