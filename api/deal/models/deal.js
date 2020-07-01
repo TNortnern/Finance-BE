@@ -47,17 +47,19 @@ module.exports = {
       if (params._id !== deal.id) {
         return;
       }
-      const entries = await strapi
-        .query("deal-entry")
-        .find({ deal: params.id });
-      const entryIds = entries.map((entry) => entry.id);
-      if (JSON.stringify(data.entries) !== JSON.stringify(entryIds)) {
-        for await (const entry of entries) {
-          if (!data.entries.includes(entry)) {
-            await strapi.query("deal-entry").delete({
-              id: entry.id,
-            });
-          }
+      if (data.size && deal.size !== data.size) {
+        const value = data.size - deal.size;
+
+        const entries = await strapi
+          .query("deal-entry")
+          .find({ deal: params._id });
+        const entriesWithRanks = entries.filter(
+          (entry) => entry.ranking_item !== undefined
+        );
+        for await (const e of entriesWithRanks) {
+          await strapi
+            .query("ranking-item")
+            .update({ id: e.ranking_item.id }, { size_total: e.ranking_item.size_total + 20 });
         }
       }
     },
