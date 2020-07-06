@@ -1,0 +1,108 @@
+{
+  "kind": "collectionType",
+  "collectionName": "deal_remakes",
+  "info": {
+    "name": "Deal_remake"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "author": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "deal_remakes"
+    },
+    "comments": {
+      "type": "string"
+    },
+    "Deal_type": {
+      "type": "json"
+    },
+    "Tranche": {
+      "type": "json"
+    },
+    "Company": {
+      "type": "json"
+    },
+    "Month": {
+      "type": "json"
+    },
+    "Country": {
+      "type": "json"
+    },
+    "Industry": {
+      "type": "json"
+    },
+    "Business_description": {
+      "type": "json"
+    },
+    "Is_EBITDA_above_10m": {
+      "type": "json"
+    },
+    "Seniority": {
+      "type": "json"
+    },
+    "Currency": {
+      "type": "json"
+    },
+    "EBITDA": {
+      "type": "json"
+    },
+    "Tranche_leverage": {
+      "type": "json"
+    },
+    "Total_leverage": {
+      "type": "json"
+    },
+    "Alternative_lenders": {
+      "type": "json"
+    },
+    "Floating": {
+      "type": "json"
+    },
+    "Base_rate": {
+      "type": "json"
+    },
+    "Margin": {
+      "type": "json"
+    },
+    "Floor": {
+      "type": "json"
+    },
+    "Fees": {
+      "type": "json"
+    },
+    "Maturity": {
+      "type": "json"
+    },
+    "Call_protection": {
+      "type": "json"
+    },
+    "Leverage_covenant": {
+      "type": "json"
+    },
+    "Size": {
+      "type": "json"
+    },
+    "Lender": {
+      "type": "json"
+    },
+    "Debt_advisor": {
+      "type": "json"
+    },
+    "Sponsor": {
+      "type": "json"
+    },
+    "Lender_counsel": {
+      "type": "json"
+    },
+    "approved": {
+      "type": "boolean"
+    }
+  }
+}

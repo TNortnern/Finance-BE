@@ -18,8 +18,8 @@
       "via": "items"
     },
     "deals": {
-      "via": "rankings",
-      "collection": "deal"
+      "collection": "deal",
+      "via": "rankings"
     },
     "dealAmount": {
       "type": "integer",

@@ -73,6 +73,10 @@
     "deal": {
       "via": "author",
       "model": "deal"
+    },
+    "deal_remakes": {
+      "via": "author",
+      "collection": "deal-remake"
     }
   }
 }

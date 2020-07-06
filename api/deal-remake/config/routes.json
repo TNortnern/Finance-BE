@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/deal-remakes",
+      "handler": "deal-remake.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/deal-remakes/count",
+      "handler": "deal-remake.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/deal-remakes/:id",
+      "handler": "deal-remake.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/deal-remakes",
+      "handler": "deal-remake.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/deal-remakes/:id",
+      "handler": "deal-remake.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/deal-remakes/:id",
+      "handler": "deal-remake.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
