@@ -25,7 +25,7 @@ const findRanks = async (deal) => {
 module.exports = {
   lifecycles: {
     async beforeUpdate(params, data) {
-      console.log("data", data);
+    //   console.log("data", data);
       const deal = await strapi
         .query("deal-remake")
         .findOne({ id: params._id });
