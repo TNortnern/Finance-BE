@@ -93,11 +93,11 @@ module.exports = {
      baseCreateDealRemake(title: String, dealData: JSON, author: String, approved: Boolean): Deal
   `,
   query: `
-    sorter(where: JSON, sort: String, limit: Int, cursor: String): [DealRemake]
+    dealFilter(where: JSON, sort: String, limit: Int, cursor: String): [DealRemake]
   `,
   resolver: {
     Query: {
-      sorter: {
+      dealFilter: {
         resolverOf: "application::deal-remake.deal-remake.sorter",
         resolver: async (parent, data, { context }) => {
           const { query } = context;
