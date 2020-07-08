@@ -7,14 +7,54 @@ const capitalize = (item) => {
   return item.charAt(0).toUpperCase() + item.slice(1);
 };
 let deal;
+const rankingArrayHandler = async (ranking, key, value) => {
+  console.log('ranking', ranking)
+  let arr = [];
+  for await (const rank of value) {
+    let ranking_item = await strapi
+      .query("ranking-item")
+      .findOne({ value: rank });
+    if (
+      !ranking_item ||
+      ranking_item.ranking.name.toLowerCase() !== ranking.name.toLowerCase()
+    ) {
+      ranking_item = await strapi.query("ranking-item").create({
+        ranking: ranking.id,
+        value: rank,
+        deal: deal.id,
+        size_total: deal.Size.item.value,
+        dealAmount: 1,
+        deal_remakes: [deal.id],
+      });
+    } else {
+      await strapi.query("ranking-item").update(
+        { id: ranking_item.id },
+        {
+          size_total: ranking_item.size_total + Number(deal.Size.item.value),
+          dealAmount: ranking_item.dealAmount + 1,
+        }
+      );
+    }
+    arr = [
+      ...arr,
+      {
+        item: { value: ranking_item.value, status: null, id: ranking_item.id },
+      },
+    ];
+  }
+  await strapi.query("deal-remake").update(
+    { id: deal.id },
+    {
+      [key]: arr,
+    }
+  );
+};
 const filterArrayHandler = async (filter, key, value) => {
   let arr = [];
   for await (const filt of value) {
-    // console.log("filt", filt);
     let filter_item = await strapi
       .query("filter-item")
       .findOne({ value: filt });
-    // console.log("filter_item", filter_item);
     if (
       !filter_item ||
       filter_item.filter.name.toLowerCase() !== filter.name.toLowerCase()
@@ -24,7 +64,6 @@ const filterArrayHandler = async (filter, key, value) => {
         value: filt,
       });
     }
-    // console.log('filter_item.value', filter_item.value)
     arr = [
       ...arr,
       { item: { value: filter_item.value, status: null, id: filter_item.id } },
@@ -91,12 +130,13 @@ module.exports = {
     await filterItemHandler(filter, key, value);
   },
   async rankingHandler(ranking, key, value, passedDeal) {
+    console.log('ranking before', ranking)
     deal = passedDeal;
-    // if (Array.isArray(value)) {
-    //   console.log('isanarray', value)
-    //   await rankingArrayHandler(filter, key, value);
-    //   return;
-    // }
+    if (Array.isArray(value)) {
+      console.log("isanarray", value);
+      await rankingArrayHandler(ranking, key, value);
+      return;
+    }
     // console.log('value', ranking)
     let ranking_item = await strapi.query("ranking-item").findOne({ value });
     let resolvedValue = ranking_item ? ranking_item.value : "";

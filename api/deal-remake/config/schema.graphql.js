@@ -174,7 +174,7 @@ module.exports = {
                 const reprinted = `${splitup[0]} ${splitup[1]}`;
                 ranking = isRanking(reprinted);
                 if (ranking) {
-                  console.log("x", value);
+                  console.log("x", ranking);
                   resolveRanking(ranking, x, value);
                   //
                 } else {
