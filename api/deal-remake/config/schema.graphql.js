@@ -5,74 +5,109 @@ const capitalize = (item) => {
   return item.charAt(0).toUpperCase() + item.slice(1);
 };
 const resolveFilter = async (filter, key, value) => {
-  return await strapi.controllers["deal-remake"].filterHandler(filter, key, value, deal);
+  return await strapi.controllers["deal-remake"].filterHandler(
+    filter,
+    key,
+    value,
+    deal
+  );
 };
 const resolveRanking = async (ranking, key, value) => {
-  // console.log('value', ranking)
-  let ranking_item = await strapi.query("ranking-item").findOne({ value });
-  let resolvedValue = ranking_item ? ranking_item.value : "";
-  let resolvedId = ranking_item ? ranking_item.id : "";
-  let matcher;
-  if (ranking_item) {
-    if (key.includes("_")) {
-      let temp = key.split("_")[0] + " " + key.split("_")[1];
-      matcher = temp.toLowerCase() === ranking_item.ranking.name.toLowerCase();
-    } else {
-      matcher = key.toLowerCase() === ranking_item.ranking.name.toLowerCase();
-    }
-  }
-  if (!matcher) {
-    console.log("matcher did not work worked");
-    ranking_item = await strapi.query("ranking-item").create({
-      ranking: ranking.id,
-      value,
-      deal: deal.id,
-      size_total: deal.Size.item.value,
-      dealAmount: 1,
-      deal_remakes: [deal.id],
-    });
-    resolvedValue = ranking_item.value;
-    resolvedId = ranking_item.id;
-  } else {
-    await strapi.query("ranking-item").update(
-      { id: ranking_item.id },
-      {
-        size_total: ranking_item.size_total + Number(deal.Size.item.value),
-        dealAmount: ranking_item.dealAmount + 1,
-      }
-    );
-  }
-  return await strapi.query("deal-remake").update(
-    { id: deal.id },
-    {
-      [capitalize(key)]: {
-        item: {
-          value: resolvedValue || value,
-          status: null,
-          id: resolvedId,
-          isRanking: true,
-        },
-      },
-    }
+  await strapi.controllers["deal-remake"].rankingHandler(
+    ranking,
+    key,
+    value,
+    deal
   );
 };
 
 module.exports = {
+  definition: `
+    type DealRemakePayload {
+      deals: [DealRemake],
+      frontCursor: String,
+      backCursor: String,
+      hasMore: Boolean
+    }
+  `,
   mutation: `
      baseCreateDealRemake(title: String, dealData: JSON, author: String, approved: Boolean): Deal
   `,
   query: `
-    dealFilter(where: JSON, sort: String, limit: Int, cursor: String): [DealRemake]
+    dealFilter(where: JSON, sort: String, limit: Int, frontCursor: String, backCursor: String ): DealRemakePayload
   `,
   resolver: {
     Query: {
+      // DealRemakePayload: {
+
+      // },
       dealFilter: {
         resolverOf: "application::deal-remake.deal-remake.sorter",
         resolver: async (parent, data, { context }) => {
           const { query } = context;
+          const limit = query._limit;
+          let hasMore = true;
+          const sort = query._sort;
+          let frontCursor = query._frontCursor || "";
+          let backCursor = query._backCursor || "";
           delete query._limit;
-          const deals = await strapi.query("deal-remake").model.find(query);
-          return deals;
+          delete query._sort;
+          delete query._frontCursor;
+          delete query._backCursor;
+          console.log("query", query);
+          console.log("context", limit, sort);
+          // query.title = {
+          //   "title": { $gt: "mycompany (Jan 19 sponsor DealType2): mytrance" },
+          // };
+          // console.log('title', query.title)
+          // if (cursor.)
+          const sortDesc = sort.charAt(0) === "-";
+          const whereDisplay =
+            backCursor || frontCursor
+              ? "_id"
+              : sortDesc
+              ? sort.substr(1)
+              : sort;
+          const handleOrder = () => {
+            if (!frontCursor && !backCursor) {
+              return
+            } else if(backCursor) {
+              return 'gt'
+            } else {
+              return 'lt';
+            }
+          };
+          const handleCursor = () => {
+            if (frontCursor) {
+              return frontCursor;
+            } else {
+              return backCursor;
+            }
+          };
+          let deals;
+          if (!frontCursor && !backCursor) {
+            deals = await strapi
+              .query("deal-remake")
+              .model.find(query)
+              .sort(sort)
+              .limit(Number(limit));
+          } else {
+            deals = await strapi
+              .query("deal-remake")
+              .model.find(query)
+              .sort(sort)
+              .where(whereDisplay)
+              [handleOrder()](handleCursor())
+              .limit(Number(limit));
+          }
+          // const count = await strapi.query('deal-remake').count({})
+          backCursor = deals[deals.length - 1]._id || "";
+          frontCursor = frontCursor || "";
+          if (deals.length < limit) {
+            hasMore = false;
+            backCursor = ""
+          }
+          return { deals, frontCursor, backCursor, hasMore };
         },
       },
     },
@@ -127,7 +162,11 @@ module.exports = {
             // size and comments already have been extracted so just ignore those fields
             if (x !== "Comments" && x !== "Size") {
               let value = cur;
-              if (typeof cur === "object" && !Array.isArray(cur) && cur !== null) {
+              if (
+                typeof cur === "object" &&
+                !Array.isArray(cur) &&
+                cur !== null
+              ) {
                 value = cur.value;
               }
               if (x.includes("_")) {
