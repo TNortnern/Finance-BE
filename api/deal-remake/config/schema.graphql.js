@@ -25,8 +25,8 @@ module.exports = {
   definition: `
     type DealRemakePayload {
       deals: [DealRemake],
-      frontCursor: String,
-      backCursor: String,
+      nextCursor: String,
+      prevCursor: String,
       hasMore: Boolean
     }
   `,
@@ -34,7 +34,7 @@ module.exports = {
      baseCreateDealRemake(title: String, dealData: JSON, author: String, approved: Boolean): Deal
   `,
   query: `
-    dealFilter(where: JSON, sort: String, limit: Int, frontCursor: String, backCursor: String ): DealRemakePayload
+    dealFilter(where: JSON, sort: String, limit: Int, cursor: String ): DealRemakePayload
   `,
   resolver: {
     Query: {
@@ -45,15 +45,15 @@ module.exports = {
         resolverOf: "application::deal-remake.deal-remake.sorter",
         resolver: async (parent, data, { context }) => {
           const { query } = context;
+          console.log("query", query);
           const limit = query._limit;
+          let cursor = query._cursor || "";
           let hasMore = true;
           const sort = query._sort;
-          let frontCursor = query._frontCursor || "";
-          let backCursor = query._backCursor || "";
+          // removing these so that the query doesn't use them, instead they'll be used in custom ways
           delete query._limit;
           delete query._sort;
-          delete query._frontCursor;
-          delete query._backCursor;
+          delete query._cursor;
           console.log("query", query);
           console.log("context", limit, sort);
           // query.title = {
@@ -62,30 +62,25 @@ module.exports = {
           // console.log('title', query.title)
           // if (cursor.)
           const sortDesc = sort.charAt(0) === "-";
-          const whereDisplay =
-            backCursor || frontCursor
-              ? "_id"
-              : sortDesc
-              ? sort.substr(1)
-              : sort;
+          const whereDisplay = cursor
+            ? "_id"
+            : sortDesc
+            ? sort.substr(1)
+            : sort;
           const handleOrder = () => {
-            if (!frontCursor && !backCursor) {
-              return
-            } else if(backCursor) {
-              return 'gt'
+            if (!cursor) {
+              return;
             } else {
-              return 'lt';
-            }
-          };
-          const handleCursor = () => {
-            if (frontCursor) {
-              return frontCursor;
-            } else {
-              return backCursor;
+              if (sortDesc) {
+                return "lt";
+              }
+              return "gt";
             }
           };
           let deals;
-          if (!frontCursor && !backCursor) {
+          console.log("whereDisplay", whereDisplay);
+          console.log("handleOrder", handleOrder());
+          if (!cursor) {
             deals = await strapi
               .query("deal-remake")
               .model.find(query)
@@ -97,17 +92,18 @@ module.exports = {
               .model.find(query)
               .sort(sort)
               .where(whereDisplay)
-              [handleOrder()](handleCursor())
+              [handleOrder()](cursor)
               .limit(Number(limit));
           }
+          console.log('query', query)
           // const count = await strapi.query('deal-remake').count({})
-          backCursor = deals[deals.length - 1]._id || "";
-          frontCursor = frontCursor || "";
+          nextCursor = deals[deals.length - 1]._id || "";
+          prevCursor = deals[0]._id || "";
           if (deals.length < limit) {
             hasMore = false;
-            backCursor = ""
+            nextCursor = "";
           }
-          return { deals, frontCursor, backCursor, hasMore };
+          return { deals, prevCursor, nextCursor, hasMore };
         },
       },
     },

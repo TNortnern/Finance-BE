@@ -8,7 +8,7 @@ const capitalize = (item) => {
 };
 let deal;
 const rankingArrayHandler = async (ranking, key, value) => {
-  console.log('ranking', ranking)
+  // console.log('ranking', ranking)
   let arr = [];
   for await (const rank of value) {
     let ranking_item = await strapi
