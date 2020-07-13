@@ -45,7 +45,7 @@ module.exports = {
         resolverOf: "application::deal-remake.deal-remake.sorter",
         resolver: async (parent, data, { context }) => {
           const { query } = context;
-          console.log("query", query);
+          // console.log("query", query);
           const limit = query._limit;
           let cursor = query._cursor || "";
           let hasMore = true;
@@ -54,8 +54,8 @@ module.exports = {
           delete query._limit;
           delete query._sort;
           delete query._cursor;
-          console.log("query", query);
-          console.log("context", limit, sort);
+          // console.log("query", query);
+          // console.log("context", limit, sort);
           // query.title = {
           //   "title": { $gt: "mycompany (Jan 19 sponsor DealType2): mytrance" },
           // };
@@ -78,8 +78,8 @@ module.exports = {
             }
           };
           let deals;
-          console.log("whereDisplay", whereDisplay);
-          console.log("handleOrder", handleOrder());
+          // console.log("whereDisplay", whereDisplay);
+          // console.log("handleOrder", handleOrder());
           if (!cursor) {
             deals = await strapi
               .query("deal-remake")
@@ -95,7 +95,7 @@ module.exports = {
               [handleOrder()](cursor)
               .limit(Number(limit));
           }
-          console.log('query', query)
+          // console.log('query', query)
           // const count = await strapi.query('deal-remake').count({})
           nextCursor = deals[deals.length - 1]._id || "";
           prevCursor = deals[0]._id || "";

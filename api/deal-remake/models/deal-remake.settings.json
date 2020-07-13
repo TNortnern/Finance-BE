@@ -103,6 +103,9 @@
     },
     "approved": {
       "type": "boolean"
+    },
+    "Year": {
+      "type": "json"
     }
   }
 }
