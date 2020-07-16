@@ -35,6 +35,9 @@
     "entries": {
       "collection": "deal-entry",
       "via": "ranking_item"
+    },
+    "deal_remakes": {
+      "collection": "deal-remake"
     }
   }
 }

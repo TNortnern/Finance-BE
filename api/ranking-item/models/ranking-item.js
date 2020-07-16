@@ -31,6 +31,10 @@ module.exports = {
     //     data.size_total = sizeTotal;
     //   }
     // },
+    async beforeFind(params, populate) {
+      // console.log('params', params)
+      // console.log('populate', populate)
+    },
     async beforeDelete(params) {
       const ranking = await strapi.query("ranking-item").findOne({ id: params._id });
       const entries = await strapi

@@ -31,7 +31,7 @@ module.exports = {
     }
   `,
   mutation: `
-     baseCreateDealRemake(title: String, dealData: JSON, author: String, approved: Boolean): Deal
+     baseCreateDealRemake(title: String, dealData: JSON, author: String, approved: Boolean): DealRemake
   `,
   query: `
     dealFilter(where: JSON, sort: String, limit: Int, cursor: String ): DealRemakePayload
@@ -115,16 +115,28 @@ module.exports = {
           { dealData, title, approved, author },
           { context }
         ) => {
-          // const result = await strapi.query("filter-item").model.find().distinct('value');
           ctx = context;
           const filters = await strapi.query("filter").find({});
-          let comments = dealData.comments;
+          let comments = dealData.Comments.value;
           deal = await strapi.query("deal-remake").create({
             title,
             comments,
             approved,
             author,
-            Size: { item: { value: dealData.size, status: null, id: null } },
+            Size: {
+              item: {
+                value: dealData.Size.value,
+                status: dealData.Size.status,
+                id: null,
+              },
+            },
+            Is_EBITDA_above_10m: {
+              item: {
+                value: "N/A",
+                status: null,
+                id: null,
+              },
+            },
           });
           const rankings = [
             {
@@ -153,41 +165,29 @@ module.exports = {
           for (let x in dealData) {
             let filter = null;
             let ranking = null;
-            let cur = dealData[x];
+            let current = dealData[x];
             x = capitalize(x);
             // size and comments already have been extracted so just ignore those fields
             if (x !== "Comments" && x !== "Size") {
-              let value = cur;
-              if (
-                typeof cur === "object" &&
-                !Array.isArray(cur) &&
-                cur !== null
-              ) {
-                value = cur.value;
-              }
+              // check if the object key contains a underscore, if so we need to handle these differently to find filters/rankings
               if (x.includes("_")) {
                 const splitup = x.split("_");
                 const reprinted = `${splitup[0]} ${splitup[1]}`;
                 ranking = isRanking(reprinted);
                 if (ranking) {
-                  console.log("x", ranking);
-                  resolveRanking(ranking, x, value);
-                  //
+                  resolveRanking(ranking, x, current);
                 } else {
                   filter = filters.find((filt) => filt.name === reprinted);
                   if (filter) {
-                    resolveFilter(filter, x, value);
+                    resolveFilter(filter, x, current);
                   }
                 }
               } else {
                 ranking = isRanking(x);
                 if (ranking) {
-                  resolveRanking(ranking, x, value);
+                  resolveRanking(ranking, x, current);
                 } else {
                   let specialCase = "";
-                  if (x === "Above10") {
-                    specialCase = "Is EBITDA above 10m?";
-                  }
                   if (specialCase) {
                     filter = filters.find(
                       (filt) =>
@@ -199,13 +199,12 @@ module.exports = {
                     );
                   }
                   // we used a special name for this on the frontend so we need to convert so that the filter can be found properly
-                  if (x === "Above10") x = "Is_EBITDA_above_10m";
-                  resolveFilter(filter, x, value);
+                  resolveFilter(filter, x, current);
                 }
               }
             }
           }
-          return deal;
+          return deal
         },
       },
     },

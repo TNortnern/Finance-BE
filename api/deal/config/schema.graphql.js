@@ -57,10 +57,6 @@ module.exports = {
           });
           const rankings = [
             {
-              id: "5ef2099480bf93656c8fdd06",
-              name: "Lawyer",
-            },
-            {
               id: "5ef782a0eaa67c240465a46d",
               name: "Lender",
             },

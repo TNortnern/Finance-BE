@@ -24,6 +24,9 @@ const findRanks = async (deal) => {
 
 module.exports = {
   lifecycles: {
+    async beforeCreate(data) {
+     
+    },
     async beforeUpdate(params, data) {
     //   console.log("data", data);
       const deal = await strapi
@@ -46,43 +49,47 @@ module.exports = {
             .query("ranking-item")
             .findOne({ id: item.id });
           const result = rank.size_total + value;
+          // let resolveItems = rank.items;
+          // if (!Array.isArray(resolveItems)) {
+          //   resolveItems = []
+          // }
           await strapi
             .query("ranking-item")
             .update({ id: rank.id }, { size_total: result < 0 ? 0 : result });
         }
       }
     },
-    async beforeDelete(params) {
-      const deal = await strapi
-        .query("deal-remake")
-        .findOne({ id: params._id });
-      const ranks = [
-        deal.Lender,
-        deal.Debt_advisor,
-        deal.Sponsor,
-        deal.Lender_counsel,
-      ];
-      //   console.log('deal', deal)
-      for (let each of ranks) {
-        if (!each) {
-          return;
-        }
-        const { item } = each;
-        const rank = await strapi
-          .query("ranking-item")
-          .findOne({ id: item.id });
-        if (!rank) {
-          return;
-        }
-        let value = Number(rank.size_total) - Number(deal.Size.item.value);
-        await strapi.query("ranking-item").update(
-          { id: rank.id },
-          {
-            size_total: value < 0 ? 0 : value,
-            dealAmount: rank.dealAmount - 1,
-          }
-        );
-      }
-    },
+    // async beforeDelete(params) {
+    //   const deal = await strapi
+    //     .query("deal-remake")
+    //     .findOne({ id: params._id });
+    //   const ranks = [
+    //     deal.Lender,
+    //     deal.Debt_advisor,
+    //     deal.Sponsor,
+    //     deal.Lender_counsel,
+    //   ];
+    //   //   console.log('deal', deal)
+    //   for (let each of ranks) {
+    //     if (!each) {
+    //       return;
+    //     }
+    //     const { item } = each;
+    //     const rank = await strapi
+    //       .query("ranking-item")
+    //       .findOne({ id: item.id });
+    //     if (!rank) {
+    //       return;
+    //     }
+    //     let value = Number(rank.size_total) - Number(deal.Size.item.value);
+    //     await strapi.query("ranking-item").update(
+    //       { id: rank.id },
+    //       {
+    //         size_total: value < 0 ? 0 : value,
+    //         dealAmount: rank.dealAmount - 1,
+    //       }
+    //     );
+    //   }
+    // },
   },
 };
