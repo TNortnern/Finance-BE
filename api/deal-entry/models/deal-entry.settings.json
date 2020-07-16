@@ -13,10 +13,6 @@
       "via": "entries",
       "model": "deal"
     },
-    "ranking_item": {
-      "via": "entries",
-      "model": "ranking-item"
-    },
     "filter_item": {
       "model": "filter-item",
       "via": "entries"

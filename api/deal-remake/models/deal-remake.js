@@ -24,41 +24,41 @@ const findRanks = async (deal) => {
 
 module.exports = {
   lifecycles: {
-    async beforeCreate(data) {
+    // async beforeCreate(data) {
      
-    },
-    async beforeUpdate(params, data) {
-    //   console.log("data", data);
-      const deal = await strapi
-        .query("deal-remake")
-        .findOne({ id: params._id });
-      const ranks = [
-        deal.Lender,
-        deal.Debt_advisor,
-        deal.Sponsor,
-        deal.Lender_counsel,
-      ];
-      if (params._id !== deal.id) {
-        return;
-      }
-      if (data.Size && deal.Size.item.value !== data.Size.item.value) {
-        const value = data.Size.item.value - Number(deal.Size.item.value);
-        for await (const each of ranks) {
-          const { item } = each;
-          const rank = await strapi
-            .query("ranking-item")
-            .findOne({ id: item.id });
-          const result = rank.size_total + value;
-          // let resolveItems = rank.items;
-          // if (!Array.isArray(resolveItems)) {
-          //   resolveItems = []
-          // }
-          await strapi
-            .query("ranking-item")
-            .update({ id: rank.id }, { size_total: result < 0 ? 0 : result });
-        }
-      }
-    },
+    // },
+    // async beforeUpdate(params, data) {
+    // //   console.log("data", data);
+    //   const deal = await strapi
+    //     .query("deal-remake")
+    //     .findOne({ id: params._id });
+    //   const ranks = [
+    //     deal.Lender,
+    //     deal.Debt_advisor,
+    //     deal.Sponsor,
+    //     deal.Lender_counsel,
+    //   ];
+    //   if (params._id !== deal.id) {
+    //     return;
+    //   }
+    //   if (data.Size && deal.Size.item.value !== data.Size.item.value) {
+    //     const value = data.Size.item.value - Number(deal.Size.item.value);
+    //     for await (const each of ranks) {
+    //       const { item } = each;
+    //       const rank = await strapi
+    //         .query("ranking-item")
+    //         .findOne({ id: item.id });
+    //       const result = rank.size_total + value;
+    //       // let resolveItems = rank.items;
+    //       // if (!Array.isArray(resolveItems)) {
+    //       //   resolveItems = []
+    //       // }
+    //       await strapi
+    //         .query("ranking-item")
+    //         .update({ id: rank.id }, { size_total: result < 0 ? 0 : result });
+    //     }
+    //   }
+    // },
     // async beforeDelete(params) {
     //   const deal = await strapi
     //     .query("deal-remake")

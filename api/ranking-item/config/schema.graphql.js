@@ -11,13 +11,10 @@ module.exports = {
     rankingsSort(whereRankings: JSON, whereDeals: JSON, sort: String, limit: Int): [RankingItem],
   `,
   resolver: {
-
     Query: {
       rankingsSort: {
         resolverOf: "application::ranking-item.ranking-item.find",
         resolver: async (parent, data, { context }) => {
-          // console.log('context', context.query)
-          // console.log('context.state', context.state)
           function flatten(value, path = []) {
             if (value != null && typeof value === "object") {
               return Object.entries(value).reduce(
@@ -31,13 +28,6 @@ module.exports = {
 
             return { [path.join(".")]: value };
           }
-          console.log('flatten', flatten(context.query._whereDeals))
-          // const arank = await strapi.query('deal-remake').model.find({ "Deal_type.item.value": "dea" })
-          // console.log('object', arank)
-          // console.log('items', await strapi.query('ranking-item').find( {"ranking.name": "Lender" } ))
-          // console.log('object', arank.map(ar => ar.id))
-          console.log('context.query_limit ', context.query._limit )
-          const rankQuery = flatten(context.query._whereRankings)
           const lookup = await strapi.query("ranking-item").model.aggregate([
             {
               $lookup: {
@@ -47,7 +37,7 @@ module.exports = {
                 as: "ranking",
               },
             },
-            { $match: { ...flatten(context.query._whereRankings) } },
+            { $match: flatten(context.query._whereRankings) },
             { $unwind: "$ranking" },
             {
               $lookup: {
@@ -76,28 +66,10 @@ module.exports = {
             {
               $limit: Number(context.query._limit) || 10
             }
-            // { $replaceRoot: { newRoot: "$doc" } },
-
-            //  {
-            //    $project: {
-            //      test: "$$ROOT"
-            //    }
-            //  }
           ]);
-          console.log("lookup", lookup);
           return lookup;
         },
       },
     },
-    // Mutation: {
-    //   // await strapi.services.deal.search(ctx.query)
-    //   bulkCreateRankings: {
-    //     resolverOf: "application::ranking-item.ranking-item.create",
-    //     resolver: async (parent, {ranking, value}, {context}) => {
-    //       const rank = await strapi.query('ranking').findOne({ name: ranking })
-
-    //     },
-    //   },
-    // },
   },
 };
