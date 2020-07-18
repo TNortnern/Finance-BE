@@ -85,8 +85,8 @@ module.exports = {
               [handleOrder()](cursor)
               .limit(Number(limit));
           }
-          nextCursor = deals[deals.length - 1]._id || "";
-          prevCursor = deals[0]._id || "";
+          nextCursor = deals.length && deals[deals.length - 1]._id || "";
+          prevCursor = deals.length && deals[0]._id || "";
           if (deals.length < limit) {
             hasMore = false;
             nextCursor = "";
