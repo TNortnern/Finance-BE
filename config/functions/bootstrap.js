@@ -12,5 +12,5 @@
 
 module.exports = () => {
     // strapi.services['rankings-seeder'].seed();
-    strapi.services['deal-remakes-seeder'].seed();
+    // strapi.services['deal-remakes-seeder'].seed();
 };
