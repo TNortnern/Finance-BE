@@ -111,6 +111,13 @@ module.exports = {
           Comments: { value: faker.random.words(7), status: null },
         },
       };
+      await strapi.services["deal-remake"].baseCreateDealRemake(
+        deal.dealData,
+        deal.title,
+        deal.approved,
+        deal.author || null
+      );
+
       console.log("deal", deal);
     }
   },
