@@ -82,7 +82,7 @@ const filterArrayHandler = async (filter, key, value) => {
       },
     ];
   }
-  console.log("arr", arr);
+  // console.log("arr", arr);
   await strapi.query("deal-remake").update(
     { id: deal.id },
     {
@@ -145,14 +145,10 @@ module.exports = {
     // console.log('ranking before', ranking)
     deal = passedDeal;
     if (Array.isArray(item.value)) {
-      console.log("isanarray", item.value);
+      // console.log("isanarray", item.value);
       await rankingArrayHandler(ranking, key, item.value);
       return;
     }
-    if (ranking === "Sponsor") {
-      console.log("still got here");
-    }
-    // console.log('value', ranking)
     let ranking_item = await strapi
       .query("ranking-item")
       .findOne({ value: item.value });
@@ -169,7 +165,6 @@ module.exports = {
       }
     }
     if (!matcher) {
-      console.log("matcher did not work worked");
       ranking_item = await strapi.query("ranking-item").create({
         ranking: ranking.id,
         value: item.value,

@@ -9,18 +9,24 @@ module.exports = {
   //   return isUserOnline(arg1, arg2);
   // }
   seed: async () => {
-    for (let i = 0; i < 2; i++) {
+    let deals = [];
+    const amount = 51;
+    for (let i = 0; i < amount; i++) {
       const month = `${faker.date.month().substr(0, 3)} ${
         Math.floor(Math.random() * 21) + 10
       }`;
       const company = faker.company.companyName();
-      const sponsors = [
-        { value: faker.company.companyName() },
-        { value: faker.company.companyName() },
-      ];
+      let sponsors = [];
+      let lenders = [];
+      for (let x = 0; x < faker.random.number(7) + 1; x++) {
+        sponsors.push({ value: faker.company.companyName(), status: null });
+      }
+      for (let y = 0; y < faker.random.number(7) + 1; y++) {
+        lenders.push({ value: faker.name.findName(), status: null });
+      }
       const dealType = faker.lorem.word();
       const tranche = faker.lorem.word();
-      const deal = {
+      const item = {
         title: `${company} (${month} ${sponsors[0].value} ${dealType}): ${tranche}`,
         // author: "5ef6372c6e5c8d0017a3614c",
         dealData: {
@@ -29,7 +35,7 @@ module.exports = {
             status: null,
           },
           Year: {
-            value: `20${month.split(' ')[1]}`
+            value: `20${month.split(" ")[1]}`,
           },
           Company: { value: company, status: null },
           Country: {
@@ -80,15 +86,8 @@ module.exports = {
             status: null,
           },
           Lender: {
-            value: [
-              { value: faker.name.findName() },
-              { value: faker.name.findName() },
-            ],
+            value: lenders,
             status: null,
-            holder: [
-              { value: faker.name.findName() },
-              { value: faker.name.findName() },
-            ],
           },
           Lender_counsel: {
             value: faker.name.findName(),
@@ -114,14 +113,23 @@ module.exports = {
           Comments: { value: faker.random.words(7), status: null },
         },
       };
-      await strapi.services["deal-remake"].baseCreateDealRemake(
-        deal.dealData,
-        deal.title,
-        deal.approved,
-        deal.author || null
-      );
-
-      console.log("deal", deal);
+      deals.push(item);
     }
+    let counter = 0;
+    let creations = setInterval(async () => {
+      let deal = deals[counter];
+      if (counter < 50) {
+        counter++;
+        await strapi.services["deal-remake"].baseCreateDealRemake(
+          deal.dealData,
+          deal.title,
+          deal.approved,
+          deal.author || null
+        );
+      } else {
+        console.log("seeding done.");
+        clearInterval(creations);
+      }
+    }, 5000);
   },
 };

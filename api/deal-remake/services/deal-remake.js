@@ -27,7 +27,7 @@ const resolveRanking = async (ranking, key, value) => {
 
 module.exports = {
   baseCreateDealRemake: async (dealData, title, approved, author) => {
-      console.log('dealData', dealData)
+      // console.log('dealData', dealData)
     const filters = await strapi.query("filter").find({});
     let comments = dealData.Comments.value;
     deal = await strapi.query("deal-remake").create({
@@ -44,7 +44,7 @@ module.exports = {
       },
       Is_EBITDA_above_10m: {
         item: {
-          value: dealData.EBITDA > 10 ? "Yes" : "No",
+          value: dealData.EBITDA.value > 10 ? "Yes" : "No",
           status: null,
           id: null,
         },
