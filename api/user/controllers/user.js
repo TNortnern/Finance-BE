@@ -151,7 +151,7 @@ module.exports = {
 
     try {
       if (!settings.email_confirmation) {
-        params.confirmed = true;
+        params.confirmed = false;
       }
 
       const user = await strapi
