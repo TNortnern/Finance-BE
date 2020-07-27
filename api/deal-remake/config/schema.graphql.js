@@ -32,6 +32,13 @@ module.exports = {
           delete query._limit;
           delete query._sort;
           delete query._cursor;
+          const queryToArray = Object.keys(query)
+          queryToArray.forEach((item, i) => {
+            if (Array.isArray(query[item])) {
+              query[item] = { $all: query[item] }
+            }
+          });
+          console.log('query', query)
           const sortDesc = sort.charAt(0) === "-";
           const whereDisplay = cursor
             ? "_id"
