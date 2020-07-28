@@ -28,6 +28,20 @@ module.exports = {
 
             return { [path.join(".")]: value };
           }
+          const dealsWhere =
+            (context.query._whereDeals &&
+              context.query._whereDeals.deal_remakes) ||
+            null;
+          if (dealsWhere) {
+            const dealsAsArr = Object.keys(dealsWhere);
+            dealsAsArr.forEach((d) => {
+              dealsWhere[`deal_remakes.${d}.item.value`] = {
+                $in: dealsWhere[d].item.value,
+              };
+              delete dealsWhere[d];
+            });
+          }
+          // console.log("flatten(context.query._whereDeals)", dealsWhere);
           const lookup = await strapi.query("ranking-item").model.aggregate([
             {
               $lookup: {
@@ -48,12 +62,12 @@ module.exports = {
               },
             },
             { $unwind: "$deal_remakes" },
-            { $match: flatten(context.query._whereDeals) },
+            { $match: dealsWhere || {} },
             {
               $group: {
                 _id: "$value",
-                value: { $first: '$value'},
-                ranking: { $first: '$ranking' },
+                value: { $first: "$value" },
+                ranking: { $first: "$ranking" },
                 total_amount: {
                   $sum: { $toInt: "$deal_remakes.Size.item.value" },
                 },
@@ -64,8 +78,8 @@ module.exports = {
               $sort: { [context.query._sort]: -1 },
             },
             {
-              $limit: Number(context.query._limit) || 10
-            }
+              $limit: Number(context.query._limit) || 10,
+            },
           ]);
           return lookup;
         },

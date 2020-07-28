@@ -27,9 +27,21 @@ const resolveRanking = async (ranking, key, value) => {
 
 module.exports = {
   baseCreateDealRemake: async (dealData, title, approved, author) => {
-      // console.log('dealData', dealData)
+    const getUser = await strapi
+      .query("user", "users-permissions")
+      .findOne({ id: author });
+    // console.log('getUser', getUser)
+    // if submitted deal wasn't from administrator then set the approved value to false.
+    if (!getUser || !author) {
+      approved = false;
+    } else {
+      if (!getUser.role.name === "Administrator") {
+        approved = false;
+      }
+    }
+    // console.log("dealData", dealData);
     const filters = await strapi.query("filter").find({});
-    let comments = dealData.Comments.value;
+    let comments = (dealData.Comments && dealData.Comments.value) || "";
     deal = await strapi.query("deal-remake").create({
       title,
       comments,
@@ -37,19 +49,34 @@ module.exports = {
       author,
       Size: {
         item: {
-          value: dealData.Size.value,
-          status: dealData.Size.status,
+          value: (dealData.Size && dealData.Size.value) || 0,
+          status: (dealData.Size && dealData.Size.status) || null,
+          id: null,
+        },
+      },
+      Year: {
+        item: {
+          value:
+            (dealData.Year && dealData.Year.value) ||
+            `20${dealData.Month.split(" ")[1]}` ||
+            null,
+          status: (dealData.Year && dealData.Year.status) || null,
           id: null,
         },
       },
       Is_EBITDA_above_10m: {
         item: {
-          value: dealData.EBITDA.value > 10 ? "Yes" : "No",
+          value: dealData.EBITDA && dealData.EBITDA.value > 10 ? "Yes" : "No",
           status: null,
           id: null,
         },
       },
     });
+    if (!deal.Year.item.value) {
+      await strapi.query("deal-remake").delete({ id: deal.id });
+      console.log('deal deleted', deal.id)
+      return;
+    }
     const rankings = [
       {
         id: "5ef782a0eaa67c240465a46d",
@@ -86,6 +113,7 @@ module.exports = {
           const reprinted = `${splitup[0]} ${splitup[1]}`;
           ranking = isRanking(reprinted);
           if (ranking) {
+            console.log("ranking1", ranking, dealData[x]);
             resolveRanking(ranking, x, current);
           } else {
             filter = filters.find((filt) => filt.name === reprinted);
@@ -96,6 +124,7 @@ module.exports = {
         } else {
           ranking = isRanking(x);
           if (ranking) {
+            console.log("ranking1", ranking, dealData[x]);
             resolveRanking(ranking, x, current);
           } else {
             let specialCase = "";
@@ -108,8 +137,9 @@ module.exports = {
                 (filt) => filt.name.toLowerCase() === x.toLowerCase()
               );
             }
-            // we used a special name for this on the frontend so we need to convert so that the filter can be found properly
-            resolveFilter(filter, x, current);
+            if (filter) {
+              resolveFilter(filter, x, current);
+            }
           }
         }
       }
