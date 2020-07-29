@@ -8,12 +8,13 @@ const capitalize = (item) => {
 };
 let deal;
 const rankingArrayHandler = async (ranking, key, value) => {
+  // console.log('value', value)
   // console.log('ranking', ranking)
   let arr = [];
   for await (const rank of value) {
     let ranking_item = rank;
     if (deal.approved) {
-      let ranking_item = await strapi
+      ranking_item = await strapi
         .query("ranking-item")
         .findOne({ value: rank.value });
       if (
@@ -24,8 +25,7 @@ const rankingArrayHandler = async (ranking, key, value) => {
           ranking: ranking.id,
           value: rank.value,
           deal: deal.id,
-          size_total: deal.Size.item.value,
-          dealAmount: 1,
+
           deal_remakes: [deal.id],
         });
       } else {
@@ -34,8 +34,6 @@ const rankingArrayHandler = async (ranking, key, value) => {
         await strapi.query("ranking-item").update(
           { id: ranking_item.id },
           {
-            size_total: ranking_item.size_total + Number(deal.Size.item.value),
-            dealAmount: ranking_item.dealAmount + 1,
             deal_remakes: aritems,
           }
         );
@@ -121,14 +119,15 @@ const filterItemHandler = async (filter, key, item) => {
       return;
     }
   }
+  // console.log('filter_item', filter_item)
   await strapi.query("deal-remake").update(
     { id: deal.id },
     {
       [key]: {
         item: {
-          value: filter_item.value || null,
-          status: item.status || null,
-          id: filter_item.id || null,
+          value: filter_item.value ? filter_item.value : null,
+          status: item.status ? item.status : null,
+          id: filter_item.id ? filter_item.id : null,
         },
       },
     }
@@ -172,8 +171,6 @@ module.exports = {
         ranking_item = await strapi.query("ranking-item").create({
           ranking: ranking.id,
           value: item.value,
-          size_total: deal.Size.item.value,
-          dealAmount: 1,
           deal_remakes: [deal.id],
         });
       } else {
@@ -182,8 +179,7 @@ module.exports = {
         await strapi.query("ranking-item").update(
           { id: ranking_item.id },
           {
-            size_total: ranking_item.size_total + Number(deal.Size.item.value),
-            dealAmount: ranking_item.dealAmount + 1,
+
             deal_remakes: aritems,
           }
         );

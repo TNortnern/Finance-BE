@@ -63,7 +63,7 @@ const handleDeal = async (dealData) => {
         const reprinted = `${splitup[0]} ${splitup[1]}`;
         ranking = isRanking(reprinted);
         if (ranking) {
-          console.log("ranking1", ranking, dealData[x]);
+          // console.log("ranking1", ranking, dealData[x]);
           resolveRanking(ranking, x, current);
         } else {
           filter = filters.find((filt) => filt.name === reprinted);
@@ -74,7 +74,7 @@ const handleDeal = async (dealData) => {
       } else {
         ranking = isRanking(x);
         if (ranking) {
-          console.log("ranking1", ranking, dealData[x]);
+          // console.log("ranking1", ranking, dealData[x]);
           resolveRanking(ranking, x, current);
         } else {
           let specialCase = "";
@@ -151,7 +151,9 @@ module.exports = {
     return deal;
   },
   baseUpdateDealRemake: async (dealData) => {
+    // console.log('dealData', dealData)
     if (dealData && dealData.approved) {
+      deal = dealData;
       await handleDeal(dealData);
     }  
   }

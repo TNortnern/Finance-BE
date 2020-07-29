@@ -24,9 +24,55 @@ const findRanks = async (deal) => {
 
 module.exports = {
   lifecycles: {
-    // async beforeCreate(data) {
-     
-    // },
+    async beforeUpdate(params, data) {
+      // console.log("result,params,data", data);
+      // console.log('params', params)
+      // console.log("data", data);
+
+      const currentDeal = await strapi
+        .query("deal-remake")
+        .findOne({ _id: params._id });
+      if (!currentDeal.approved && data.approved) {
+        const dataAsArr = Object.keys(currentDeal);
+        dataAsArr.forEach((item) => {
+          // console.log(item)
+          // console.log('currentDeal [item]', currentDeal[item])
+          if (currentDeal[item].item) {
+            currentDeal[item] = {
+              value: currentDeal[item].item.value,
+              status: currentDeal[item].item.status,
+            };
+            // console.log('currentDeal [item] modified', currentDeal[item])
+          } else {
+            if (Array.isArray(currentDeal[item])) {
+              const arr = currentDeal[item];
+              arr.forEach((x, i) => {
+                // console.log(x);
+                arr[i] = {
+                  value: x.item.value,
+                  status: x.item.status,
+                };
+              });
+              // console.log('arr modified', arr)
+              currentDeal[item] = { value: arr };
+            }
+          }
+        });
+        currentDeal.approved = true;
+        // console.log("currentDeal", currentDeal);
+        return await strapi.services["deal-remake"].baseUpdateDealRemake(
+          currentDeal
+        );
+      }
+
+      // return await strapi.services["deal-remake"].baseUpdateDealRemake(
+      //   data
+      // );
+
+      // if (result.approved) {
+      //
+      // }
+    },
     // async beforeUpdate(params, data) {
     // //   console.log("data", data);
     //   const deal = await strapi
