@@ -32,10 +32,16 @@ module.exports = {
           delete query._limit;
           delete query._sort;
           delete query._cursor;
-          const queryToArray = Object.keys(query)
+          const queryToArray = Object.keys(query);
           queryToArray.forEach((item, i) => {
+            if (item.includes("Approved")) {
+              // if approved was passed it has a different format
+              query[item.split(".")[0].toLowerCase()] = query[item];
+              delete query[item];
+              return;
+            }
             if (Array.isArray(query[item])) {
-              query[item] = { $in: query[item] }
+              query[item] = { $in: query[item] };
             }
           });
           // console.log('query', query)
@@ -71,8 +77,8 @@ module.exports = {
               [handleOrder()](cursor)
               .limit(Number(limit));
           }
-          nextCursor = deals.length && deals[deals.length - 1]._id || "";
-          prevCursor = deals.length && deals[0]._id || "";
+          nextCursor = (deals.length && deals[deals.length - 1]._id) || "";
+          prevCursor = (deals.length && deals[0]._id) || "";
           if (deals.length < limit) {
             hasMore = false;
             nextCursor = "";
@@ -91,7 +97,12 @@ module.exports = {
         ) => {
           // console.log('context', context.request.header)
           // return;
-         return await strapi.services['deal-remake'].baseCreateDealRemake(dealData, title, approved, author)
+          return await strapi.services["deal-remake"].baseCreateDealRemake(
+            dealData,
+            title,
+            approved,
+            author
+          );
         },
       },
     },
