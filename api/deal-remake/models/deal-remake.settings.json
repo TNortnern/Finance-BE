@@ -107,6 +107,12 @@
     },
     "Year": {
       "type": "json"
+    },
+    "Use_of_proceeds": {
+      "type": "json"
+    },
+    "Size_EUR": {
+      "type": "json"
     }
   }
 }

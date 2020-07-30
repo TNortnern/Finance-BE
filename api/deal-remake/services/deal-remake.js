@@ -60,7 +60,8 @@ const handleDeal = async (dealData) => {
       // check if the object key contains a underscore, if so we need to handle these differently to find filters/rankings
       if (x.includes("_")) {
         const splitup = x.split("_");
-        const reprinted = `${splitup[0]} ${splitup[1]}`;
+        const reprinted = `${splitup.join(' ')}`;
+        console.log('reprinted', reprinted)
         ranking = isRanking(reprinted);
         if (ranking) {
           // console.log("ranking1", ranking, dealData[x]);
