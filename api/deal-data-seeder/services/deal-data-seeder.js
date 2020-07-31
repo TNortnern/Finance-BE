@@ -104,13 +104,13 @@ module.exports = {
         // }
       });
       console.log("data before", data);
-      const company = (data.Company && data.Company.value) || "N/A";
-      const month = (data.Month && data.Month.value) || "N/A";
-      const sponsor = (data.Sponsor && data.Sponsor.value[0].value) || "N/A";
-      const dealType =
-        (data["Deal type"] && data["Deal type"].value) || "N/A";
+      const company = (data.Company && data.Company.value) || "";
+      const month = (data.Month && data.Month.value) || "";
+      const sponsor = (data.Sponsor && data.Sponsor.value[0].value) || "";
+      const useOfProceeds =
+        (data["Use of proceeds"] && data["Use of proceeds"].value) || "";
       const trancheType =
-        (data["Tranche type"] && data["Tranche type"].value) || "N/A";
+        (data["Tranche type"] && data["Tranche type"].value) || "";
       data.title = `${company} (${month} ${sponsor}) ${dealType}): ${trancheType}`;
       console.log("data", data);
       await strapi.services["deal-remake"].baseCreateDealRemake(
