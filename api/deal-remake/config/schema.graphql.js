@@ -6,7 +6,8 @@ module.exports = {
       deals: [DealRemake],
       nextCursor: String,
       prevCursor: String,
-      hasMore: Boolean
+      hasMore: Boolean,
+      total: Int
     }
   `,
   mutation: `
@@ -27,7 +28,7 @@ module.exports = {
           const limit = query._limit;
           let cursor = query._cursor || "";
           let hasMore = true;
-          const sort = query._sort;
+          const sort = query._sort ? query._sort : "-createdAt";
           // removing these so that the query doesn't use them, instead they'll be used in custom ways
           delete query._limit;
           delete query._sort;
@@ -51,13 +52,17 @@ module.exports = {
             : sortDesc
             ? sort.substr(1)
             : sort;
+          let oppositeSort = "";
+          let lastItem = null;
           const handleOrder = () => {
             if (!cursor) {
               return;
             } else {
               if (sortDesc) {
+                oppositeSort = "gt";
                 return "lt";
               }
+              oppositeSort = "lt";
               return "gt";
             }
           };
@@ -68,6 +73,10 @@ module.exports = {
               .model.find(query)
               .sort(sort)
               .limit(Number(limit));
+            lastItem = await strapi
+              .query("deal-remake")
+              .model.findOne(query)
+              .sort(oppositeSort)
           } else {
             deals = await strapi
               .query("deal-remake")
@@ -76,14 +85,23 @@ module.exports = {
               .where(whereDisplay)
               [handleOrder()](cursor)
               .limit(Number(limit));
+            lastItem = await strapi
+              .query("deal-remake")
+              .model.findOne(query)
+              .sort(oppositeSort)
+              .where(whereDisplay)
+              [handleOrder()](cursor)
           }
+          const total = await strapi
+            .query("deal-remake")
+            .model.countDocuments(query);
           nextCursor = (deals.length && deals[deals.length - 1]._id) || "";
           prevCursor = (deals.length && deals[0]._id) || "";
-          if (deals.length < limit) {
+          if (deals.find(each => each.title === lastItem.title)) {
             hasMore = false;
             nextCursor = "";
           }
-          return { deals, prevCursor, nextCursor, hasMore };
+          return { deals, prevCursor, nextCursor, hasMore, total };
         },
       },
     },
