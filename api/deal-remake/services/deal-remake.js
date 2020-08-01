@@ -61,7 +61,6 @@ const handleDeal = async (dealData) => {
       if (x.includes("_")) {
         const splitup = x.split("_");
         const reprinted = `${splitup.join(' ')}`;
-        console.log('reprinted', reprinted)
         ranking = isRanking(reprinted);
         if (ranking) {
           // console.log("ranking1", ranking, dealData[x]);
@@ -102,13 +101,15 @@ module.exports = {
     const getUser = await strapi
       .query("user", "users-permissions")
       .findOne({ _id: author });
-    // console.log('getUser', getUser)
+    // console.log('getUser', getUser.role)
     // if submitted deal wasn't from administrator then set the approved value to false.
     if (!getUser || !author) {
       approved = false;
     } else {
       if (!getUser.role.name === "Administrator") {
         approved = false;
+      } else {
+        approved = true;
       }
     }
     // console.log("dealData", dealData);

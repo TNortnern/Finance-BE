@@ -113,8 +113,6 @@ module.exports = {
           { dealData, title, approved, author },
           { context }
         ) => {
-          // console.log('context', context.request.header)
-          // return;
           return await strapi.services["deal-remake"].baseCreateDealRemake(
             dealData,
             title,

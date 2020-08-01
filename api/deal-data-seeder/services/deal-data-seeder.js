@@ -13,7 +13,7 @@ module.exports = {
   //   return isUserOnline(arg1, arg2);
   // }
   seed: async () => {
-    for (let b = 80; b < 100; b++) {
+    for (let b = 220; b < 270; b++) {
       const data = strapi.services["deal-data"].get()[b];
       console.log("data", data);
       // data.forEach(item => {
@@ -56,8 +56,6 @@ module.exports = {
         }
         if (findRepeats.length > 1) {
           findRepeats.forEach((x) => {
-            // console.log("data[x]", data[x]);
-            // console.log("indexof", keysOfData.indexOf(x));
             const index = keysOfData.indexOf(x);
             let validity =
               keysOfData[index + 1].includes("Validity") &&
@@ -94,16 +92,8 @@ module.exports = {
             return item;
           }
         };
-        // console.log("findRepeats", findRepeats);
         data[resolveName()] = resolveValue();
-        // if (arr.length > 1) {
-        //   console.log(
-        //     "arr",
-        //     arr.map((e) => e)
-        //   );
-        // }
       });
-      console.log("data before", data);
       const company = (data.Company && data.Company.value) || "";
       const month = (data.Month && data.Month.value) || "";
       const sponsor = (data.Sponsor && data.Sponsor.value[0].value) || "";
@@ -117,9 +107,8 @@ module.exports = {
         data,
         data.title,
         data.approved || false,
-        data.author || null
+        process.env.ADMIN
       );
     }
-    // console.log(data.length);
   },
 };
