@@ -163,17 +163,35 @@ module.exports = {
   baseUpdateDealRemake: async (dealData, title, id) => {
     deal = dealData;
     deal.id = id ? id : dealData.id;
-    const item = await strapi.query("deal-remake").findOne({ id });
-    if (dealData.approved) {
-      return module.exports.approvedDealRemake(dealData);
-    } else {
-      if (dealData) {
-        if (title) {
-          await strapi.query("deal-remake").update({ id }, { title });
-        }
-        handleDeal(dealData);
-        return deal;
-      }
+    deal.approved = JSON.parse(dealData.approved.value);
+    deal.comments = deal.Comments && deal.Comments.value ? deal.Comments.value : ''
+      console.log('deal.comments', deal)
+    if (deal) {
+        await strapi.query("deal-remake").update(
+          { id },
+          {
+            Size: {
+              item: {
+                value: (deal.Size && deal.Size.value) || 0,
+                status: (deal.Size && deal.Size.status) || null,
+                id: null,
+              },
+            },
+            Size_EUR: {
+              item: {
+                value: (deal.Size_EUR && deal.Size_EUR.value) || 0,
+                status: (deal.Size_EUR && deal.Size_EUR.status) || null,
+                id: null,
+              },
+            },
+            approved: deal.approved,
+            title,
+            comments: deal.comments,
+          }
+        );
+
+      handleDeal(deal);
+      return deal;
     }
   },
 };
