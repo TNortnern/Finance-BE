@@ -11,7 +11,9 @@ module.exports = {
     }
   `,
   mutation: `
-     baseCreateDealRemake(title: String, dealData: JSON, author: String, approved: Boolean): DealRemake
+     baseCreateDealRemake(title: String, dealData: JSON, author: String, approved: Boolean): DealRemake,
+     baseUpdateDealRemake(title: String, dealData: JSON, id: ID): DealRemake
+
   `,
   query: `
     dealFilter(where: JSON, sort: String, limit: Int, cursor: String ): DealRemakePayload
@@ -76,7 +78,7 @@ module.exports = {
             lastItem = await strapi
               .query("deal-remake")
               .model.findOne(query)
-              .sort(oppositeSort)
+              .sort(oppositeSort);
           } else {
             deals = await strapi
               .query("deal-remake")
@@ -90,14 +92,14 @@ module.exports = {
               .model.findOne(query)
               .sort(oppositeSort)
               .where(whereDisplay)
-              [handleOrder()](cursor)
+              [handleOrder()](cursor);
           }
           const total = await strapi
             .query("deal-remake")
             .model.countDocuments(query);
           nextCursor = (deals.length && deals[deals.length - 1]._id) || "";
           prevCursor = (deals.length && deals[0]._id) || "";
-          if (deals.find(each => each.title === lastItem.title)) {
+          if (deals.find((each) => each.title === lastItem.title)) {
             hasMore = false;
             nextCursor = "";
           }
@@ -118,6 +120,16 @@ module.exports = {
             title,
             approved,
             author
+          );
+        },
+      },
+      baseUpdateDealRemake: {
+        resolverOf: "application::deal-remake.deal-remake.update",
+        resolver: async (parent, { dealData, title, id }, { context }) => {
+          return await strapi.services["deal-remake"].baseUpdateDealRemake(
+            dealData,
+            title,
+            id
           );
         },
       },

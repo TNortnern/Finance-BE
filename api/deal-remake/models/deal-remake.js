@@ -51,7 +51,7 @@ module.exports = {
           }
         });
         currentDeal.approved = true;
-        return await strapi.services["deal-remake"].baseUpdateDealRemake(
+        return await strapi.services["deal-remake"].approvedDealRemake(
           currentDeal
         );
       }

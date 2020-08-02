@@ -60,7 +60,7 @@ const handleDeal = async (dealData) => {
       // check if the object key contains a underscore, if so we need to handle these differently to find filters/rankings
       if (x.includes("_")) {
         const splitup = x.split("_");
-        const reprinted = `${splitup.join(' ')}`;
+        const reprinted = `${splitup.join(" ")}`;
         ranking = isRanking(reprinted);
         if (ranking) {
           // console.log("ranking1", ranking, dealData[x]);
@@ -152,11 +152,28 @@ module.exports = {
     await handleDeal(dealData);
     return deal;
   },
-  baseUpdateDealRemake: async (dealData) => {
+  approvedDealRemake: async (dealData) => {
     // console.log('dealData', dealData)
     if (dealData && dealData.approved) {
       deal = dealData;
       await handleDeal(dealData);
-    }  
-  }
+      return deal;
+    }
+  },
+  baseUpdateDealRemake: async (dealData, title, id) => {
+    deal = dealData;
+    deal.id = id ? id : dealData.id;
+    const item = await strapi.query("deal-remake").findOne({ id });
+    if (dealData.approved) {
+      return module.exports.approvedDealRemake(dealData);
+    } else {
+      if (dealData) {
+        if (title) {
+          await strapi.query("deal-remake").update({ id }, { title });
+        }
+        handleDeal(dealData);
+        return deal;
+      }
+    }
+  },
 };
