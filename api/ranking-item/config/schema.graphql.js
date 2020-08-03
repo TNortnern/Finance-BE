@@ -69,7 +69,7 @@ module.exports = {
                 value: { $first: "$value" },
                 ranking: { $first: "$ranking" },
                 total_amount: {
-                  $sum: { $toInt: "$deal_remakes.Size.item.value" },
+                  $sum: { $toInt: "$deal_remakes.Size_EUR.item.value" },
                 },
                 total_count: { $sum: 1 },
               },
