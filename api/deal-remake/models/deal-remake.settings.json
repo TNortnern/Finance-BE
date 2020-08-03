@@ -115,13 +115,7 @@
       "type": "json"
     },
     "Documents": {
-      "collection": "file",
-      "via": "related",
-      "allowedTypes": [
-        "files"
-      ],
-      "plugin": "upload",
-      "required": false
+      "type": "json"
     }
   }
 }

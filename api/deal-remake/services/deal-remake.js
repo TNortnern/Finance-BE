@@ -98,20 +98,23 @@ const handleDeal = async (dealData) => {
 
 module.exports = {
   baseCreateDealRemake: async (dealData, title, approved, author) => {
+    console.log("author", author);
     const getUser = await strapi
       .query("user", "users-permissions")
       .findOne({ _id: author });
-    // console.log('getUser', getUser.role)
     // if submitted deal wasn't from administrator then set the approved value to false.
     if (!getUser || !author) {
       approved = false;
     } else {
       if (!getUser.role.name === "Administrator") {
         approved = false;
-      } else {
+      } else if (getUser.role.name === "Administrator") {
         approved = true;
+      } else {
+        approved = false;
       }
     }
+    console.log("approved", approved);
     // console.log("dealData", dealData);
     let comments = (dealData.Comments && dealData.Comments.value) || "";
     deal = await strapi.query("deal-remake").create({
@@ -119,6 +122,11 @@ module.exports = {
       comments,
       approved,
       author,
+      Documents: {
+        item: {
+          value: (dealData.Documents && dealData.Documents.value) || [],
+        },
+      },
       Size: {
         item: {
           value: (dealData.Size && dealData.Size.value) || 0,
@@ -164,31 +172,32 @@ module.exports = {
     deal = dealData;
     deal.id = id ? id : dealData.id;
     deal.approved = JSON.parse(dealData.approved.value);
-    deal.comments = deal.Comments && deal.Comments.value ? deal.Comments.value : ''
-      console.log('deal.comments', deal)
+    deal.comments =
+      deal.Comments && deal.Comments.value ? deal.Comments.value : "";
+    console.log("deal.comments", deal);
     if (deal) {
-        await strapi.query("deal-remake").update(
-          { id },
-          {
-            Size: {
-              item: {
-                value: (deal.Size && deal.Size.value) || 0,
-                status: (deal.Size && deal.Size.status) || null,
-                id: null,
-              },
+      await strapi.query("deal-remake").update(
+        { id },
+        {
+          Size: {
+            item: {
+              value: (deal.Size && deal.Size.value) || 0,
+              status: (deal.Size && deal.Size.status) || null,
+              id: null,
             },
-            Size_EUR: {
-              item: {
-                value: (deal.Size_EUR && deal.Size_EUR.value) || 0,
-                status: (deal.Size_EUR && deal.Size_EUR.status) || null,
-                id: null,
-              },
+          },
+          Size_EUR: {
+            item: {
+              value: (deal.Size_EUR && deal.Size_EUR.value) || 0,
+              status: (deal.Size_EUR && deal.Size_EUR.status) || null,
+              id: null,
             },
-            approved: deal.approved,
-            title,
-            comments: deal.comments,
-          }
-        );
+          },
+          approved: deal.approved,
+          title,
+          comments: deal.comments,
+        }
+      );
 
       handleDeal(deal);
       return deal;
