@@ -13,7 +13,7 @@ module.exports = {
   //   return isUserOnline(arg1, arg2);
   // }
   seed: async () => {
-    for (let b = 200; b < 270; b++) {
+    for (let b = 130; b < 185; b++) {
       const data = strapi.services["deal-data"].get()[b];
       console.log("data", data);
       // data.forEach(item => {
@@ -21,7 +21,7 @@ module.exports = {
       // })
       const keysOfData = Object.keys(data);
       keysOfData.forEach((item, i) => {
-        if (!data[item]) {
+        if (!data[item] || data[item] === 'N/A') {
           delete data[item];
           return;
         }
@@ -98,9 +98,11 @@ module.exports = {
       const month = (data.Month && data.Month.value) || "";
       const sponsor = (data.Sponsor && data.Sponsor.value[0].value) || "";
       const useOfProceeds =
-        (data["Use of proceeds"] && data["Use of proceeds"].value) || "";
+        (data["Use of proceeds"] && data["Use_of_proceeds"].value) || "";
+        console.log('useOfProceeds', useOfProceeds)
       const trancheType =
-        (data["Tranche type"] && data["Tranche type"].value) || "";
+        (data["Tranche type"] && data["Tranche_type"].value) || "";
+        console.log('trancheType', trancheType)
       data.title = `${company} (${month} ${sponsor}) ${useOfProceeds}): ${trancheType}`;
       console.log("data", data);
       await strapi.services["deal-remake"].baseCreateDealRemake(

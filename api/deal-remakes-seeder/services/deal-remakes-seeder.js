@@ -10,7 +10,7 @@ module.exports = {
   // }
   seed: async () => {
     let deals = [];
-    const amount = 51;
+    const amount = 30;
     for (let i = 0; i < amount; i++) {
       const month = `${faker.date.month().substr(0, 3)} ${
         Math.floor(Math.random() * 21) + 10
@@ -55,6 +55,11 @@ module.exports = {
             value: tranche,
             status: null,
           },
+          Use_of_proceeds: {
+            value: faker.lorem.word(),
+            status: null,
+          },
+          Size_EUR: { value: faker.random.number(), status: null },
           Deal_type: {
             value: dealType,
             status: null,
@@ -118,13 +123,14 @@ module.exports = {
     let counter = 0;
     let creations = setInterval(async () => {
       let deal = deals[counter];
-      if (counter < 50) {
+      // console.log('deal', deal)
+      if (counter < (amount + 1)) {
         counter++;
         await strapi.services["deal-remake"].baseCreateDealRemake(
           deal.dealData,
           deal.title,
           deal.approved,
-          deal.author || null
+          process.env.ADMIN
         );
       } else {
         console.log("seeding done.");

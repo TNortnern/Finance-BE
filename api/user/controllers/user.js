@@ -43,35 +43,17 @@ module.exports = {
 
     // Password is required.
     if (!params.password) {
-      return ctx.badRequest(
-        null,
-        formatError({
-          id: "Auth.form.error.password.provide",
-          message: "Please provide your password.",
-        })
-      );
+      return ctx.throw("400", "Password is required");
     }
 
     // Email is required.
     if (!params.email) {
-      return ctx.badRequest(
-        null,
-        formatError({
-          id: "Auth.form.error.email.provide",
-          message: "Please provide your email.",
-        })
-      );
+      return ctx.throw("400", "Email is required");
     }
 
     // Email is required.
     if (!params.name) {
-      return ctx.badRequest(
-        null,
-        formatError({
-          id: "Auth.form.error.name.provide",
-          message: "Please provide your name.",
-        })
-      );
+      return ctx.throw("400", "Name is required");
     }
 
     // Throw an error if the password selected by the user
@@ -111,13 +93,7 @@ module.exports = {
     if (isEmail) {
       params.email = params.email.toLowerCase();
     } else {
-      return ctx.badRequest(
-        null,
-        formatError({
-          id: "Auth.form.error.email.format",
-          message: "Please provide valid email address.",
-        })
-      );
+      return ctx.throw("400", "Email is invalid");
     }
 
     params.role = role.id;
@@ -140,13 +116,7 @@ module.exports = {
     }
 
     if (user && user.provider !== params.provider && settings.unique_email) {
-      return ctx.badRequest(
-        null,
-        formatError({
-          id: "Auth.form.error.email.taken",
-          message: "Email is already taken.",
-        })
-      );
+      return ctx.throw("400", "Email is already taken.");
     }
 
     try {

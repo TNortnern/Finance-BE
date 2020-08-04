@@ -98,7 +98,6 @@ const handleDeal = async (dealData) => {
 
 module.exports = {
   baseCreateDealRemake: async (dealData, title, approved, author) => {
-    console.log("author", author);
     const getUser = await strapi
       .query("user", "users-permissions")
       .findOne({ _id: author });
@@ -114,7 +113,6 @@ module.exports = {
         approved = false;
       }
     }
-    console.log("approved", approved);
     // console.log("dealData", dealData);
     let comments = (dealData.Comments && dealData.Comments.value) || "";
     deal = await strapi.query("deal-remake").create({
@@ -131,6 +129,13 @@ module.exports = {
         item: {
           value: (dealData.Size && dealData.Size.value) || 0,
           status: (dealData.Size && dealData.Size.status) || null,
+          id: null,
+        },
+      },
+      Size_EUR: {
+        item: {
+          value: (dealData.Size_EUR && dealData.Size_EUR.value) || 0,
+          status: (dealData.Size_EUR && dealData.Size_EUR.status) || null,
           id: null,
         },
       },
