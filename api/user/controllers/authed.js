@@ -15,6 +15,8 @@ module.exports = {
      if (user.views_left === 0) {
        // return 1 so that the UI doesn't return 0 before it's actually 0
        return currentViews;
+     } else {
+       return user.views_left;
      }
     }
     return 0;
