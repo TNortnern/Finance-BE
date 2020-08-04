@@ -157,7 +157,7 @@ module.exports = {
         },
       },
     });
-    if (!deal.Year.item.value) {
+    if (!deal.Year.item.value || !deal.Month.item.value) {
       await strapi.query("deal-remake").delete({ id: deal.id });
       console.log("deal deleted", deal.id);
       return;
