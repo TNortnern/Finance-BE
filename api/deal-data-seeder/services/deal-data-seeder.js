@@ -13,9 +13,10 @@ module.exports = {
   //   return isUserOnline(arg1, arg2);
   // }
   seed: async () => {
+    console.log('strapi.services["deal-data"].get()', strapi.services["deal-data"].get().slice(1,100))
     for (let b = 20; b < 90; b++) {
       const data = strapi.services["deal-data"].get()[b];
-      console.log("data", data);
+      // console.log("data", data);
       // data.forEach(item => {
       //   console.log(item)
       // })

@@ -47,6 +47,14 @@
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "POST",
+      "path": "/deal-remakes/clearAll",
+      "handler": "clear.clearAll",
+      "config": {
+        "policies": []
+      }
     }
   ]
 }

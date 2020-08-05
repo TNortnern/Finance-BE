@@ -4,7 +4,7 @@ module.exports = {
   definition: `
   extend type RankingItem {
     total_count: Int
-    total_amount: Int
+    total_amount: Float
   }
   `,
   query: `
@@ -69,7 +69,7 @@ module.exports = {
                 value: { $first: "$value" },
                 ranking: { $first: "$ranking" },
                 total_amount: {
-                  $sum: { $toInt: "$deal_remakes.Size_EUR.item.value" },
+                  $sum: { $toDouble: "$deal_remakes.Size_EUR.item.value" },
                 },
                 total_count: { $sum: 1 },
               },
