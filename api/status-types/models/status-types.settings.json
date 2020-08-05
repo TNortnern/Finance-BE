@@ -15,10 +15,6 @@
     "filters": {
       "via": "status",
       "collection": "filter-item"
-    },
-    "entries": {
-      "via": "status_type",
-      "collection": "deal-entry"
     }
   }
 }

@@ -23,10 +23,6 @@
     "status": {
       "model": "status-types",
       "via": "filters"
-    },
-    "entries": {
-      "via": "filter_item",
-      "collection": "deal-entry"
     }
   }
 }

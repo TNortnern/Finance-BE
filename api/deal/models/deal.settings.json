@@ -17,9 +17,9 @@
       "default": false
     },
     "author": {
+      "via": "deal",
       "plugin": "users-permissions",
-      "model": "user",
-      "via": "deal"
+      "model": "user"
     },
     "rankings": {
       "via": "deals",
@@ -37,10 +37,6 @@
     },
     "comments": {
       "type": "string"
-    },
-    "entries": {
-      "collection": "deal-entry",
-      "via": "deal"
     }
   }
 }

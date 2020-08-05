@@ -12,10 +12,6 @@
     "name": {
       "type": "string"
     },
-    "category": {
-      "via": "filters",
-      "model": "deal-category"
-    },
     "filter_itemz": {
       "via": "filter",
       "collection": "filter-item"

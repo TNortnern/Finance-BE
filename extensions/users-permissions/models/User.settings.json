@@ -65,18 +65,19 @@
     },
     "views_left": {
       "type": "integer",
-      "default": 5
+      "default": 0,
+      "min": 0
     },
     "name": {
       "type": "string"
     },
     "deal": {
-      "via": "author",
-      "model": "deal"
+      "model": "deal",
+      "via": "author"
     },
     "deal_remakes": {
-      "via": "author",
-      "collection": "deal-remake"
+      "collection": "deal-remake",
+      "via": "author"
     }
   }
 }
