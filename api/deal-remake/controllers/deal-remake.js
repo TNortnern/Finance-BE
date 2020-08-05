@@ -11,26 +11,34 @@ const rankingArrayHandler = async (ranking, key, value) => {
   // console.log('value', value)
   // console.log('ranking', ranking)
   let arr = [];
+  console.log("ranking", ranking);
   for await (const rank of value) {
     let ranking_item = rank;
     if (deal.approved) {
       ranking_item = await strapi
         .query("ranking-item")
         .findOne({ value: rank.value });
-      if (
-        !ranking_item ||
-        ranking_item.ranking.name.toLowerCase() !== ranking.name.toLowerCase()
-      ) {
+      let matcher;
+      if (ranking_item) {
+        if (key.includes("_")) {
+          let temp = key.split("_").join(" ");
+          matcher =
+            temp.toLowerCase() === ranking_item.ranking.name.toLowerCase();
+        } else {
+          matcher =
+            key.toLowerCase() === ranking_item.ranking.name.toLowerCase();
+        }
+      }
+      if (!matcher) {
         ranking_item = await strapi.query("ranking-item").create({
           ranking: ranking.id,
           value: rank.value,
-          deal: deal.id,
-
           deal_remakes: [deal.id],
         });
       } else {
         const aritems = ranking_item.deal_remakes || [];
         aritems.push(deal.id);
+        // console.log("aritems", aritems);
         await strapi.query("ranking-item").update(
           { id: ranking_item.id },
           {
@@ -144,7 +152,7 @@ module.exports = {
     await filterItemHandler(filter, key, item);
   },
   async rankingHandler(ranking, key, item, passedDeal) {
-    // console.log('ranking before', ranking)
+    // console.log("ranking before", ranking);
     deal = passedDeal;
     if (Array.isArray(item.value)) {
       // console.log("isanarray", item.value);
@@ -159,7 +167,7 @@ module.exports = {
       let matcher;
       if (ranking_item) {
         if (key.includes("_")) {
-          let temp = key.split("_")[0] + " " + key.split("_")[1];
+          let temp = key.split("_").join(" ");
           matcher =
             temp.toLowerCase() === ranking_item.ranking.name.toLowerCase();
         } else {
@@ -179,7 +187,6 @@ module.exports = {
         await strapi.query("ranking-item").update(
           { id: ranking_item.id },
           {
-
             deal_remakes: aritems,
           }
         );
