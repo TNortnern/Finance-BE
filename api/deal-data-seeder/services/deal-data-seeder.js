@@ -13,7 +13,7 @@ module.exports = {
   //   return isUserOnline(arg1, arg2);
   // }
   seed: async () => {
-    for (let b = 130; b < 185; b++) {
+    for (let b = 20; b < 90; b++) {
       const data = strapi.services["deal-data"].get()[b];
       console.log("data", data);
       // data.forEach(item => {
@@ -21,7 +21,7 @@ module.exports = {
       // })
       const keysOfData = Object.keys(data);
       keysOfData.forEach((item, i) => {
-        if (!data[item] || data[item] === 'N/A') {
+        if (!data[item] || data[item] === "N/A") {
           delete data[item];
           return;
         }
@@ -76,10 +76,10 @@ module.exports = {
         const resolveValue = () => {
           if (arr.length) {
             // get only items that have a value
-            console.log(
-              "arr.map(a => a.value)",
-              arr.filter((a) => a.value)
-            );
+            // console.log(
+            //   "arr.map(a => a.value)",
+            //   arr.filter((a) => a.value)
+            // );
             return { value: arr.filter((a) => a.value) };
           } else {
             return { value: data[item], status: getValidity };
@@ -98,13 +98,10 @@ module.exports = {
       const month = (data.Month && data.Month.value) || "";
       const sponsor = (data.Sponsor && data.Sponsor.value[0].value) || "";
       const useOfProceeds =
-        (data["Use of proceeds"] && data["Use_of_proceeds"].value) || "";
-        console.log('useOfProceeds', useOfProceeds)
-      const trancheType =
-        (data["Tranche type"] && data["Tranche_type"].value) || "";
-        console.log('trancheType', trancheType)
+        (data["Use_of_proceeds"] && data["Use_of_proceeds"].value) || "";
+      const trancheType = (data.Tranche && data.Tranche.value) || "";
+      // console.log("trancheType", trancheType);
       data.title = `${company} (${month} ${sponsor}) ${useOfProceeds}): ${trancheType}`;
-      console.log("data", data);
       await strapi.services["deal-remake"].baseCreateDealRemake(
         data,
         data.title,
