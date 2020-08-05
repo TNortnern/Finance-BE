@@ -149,15 +149,27 @@ module.exports = {
           id: null,
         },
       },
-      Is_EBITDA_above_10m: {
+      Month: {
         item: {
-          value: dealData.EBITDA && dealData.EBITDA.value > 10 ? "Yes" : "No",
-          status: null,
+          value: (dealData.Month && dealData.Month.value) || null,
+          status: (dealData.Month && dealData.Month.status) || null,
           id: null,
         },
       },
+      // Is_EBITDA_above_10m: {
+      //   item: {
+      //     value: dealData.EBITDA && dealData.EBITDA.value > 10 ? "Yes" : "No",
+      //     status: null,
+      //     id: null,
+      //   },
+      // },
     });
-    if (!deal.Year.item.value || !deal.Month.item.value) {
+    if (
+      !deal.Year ||
+      !deal.Month ||
+      !deal.Year.item.value ||
+      !deal.Month.item.value
+    ) {
       await strapi.query("deal-remake").delete({ id: deal.id });
       console.log("deal deleted", deal.id);
       return;

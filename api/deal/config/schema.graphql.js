@@ -88,7 +88,7 @@ module.exports = {
             let filter = null;
             let ranking = null;
             // size and comments already have been extracted so just ignore those fields
-            if (x !== "Size" && x !== "Comments") {
+            if (x !== "Size" && x !== "Comments" && x !== "Month" && x !== "Year" && x !== 'Size_EUR') {
               let value = cur;
               if (typeof cur === "object") {
                 value = cur.value;

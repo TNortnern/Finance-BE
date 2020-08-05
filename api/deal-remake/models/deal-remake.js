@@ -31,7 +31,7 @@ module.exports = {
       if (!currentDeal.approved && data.approved) {
         const dataAsArr = Object.keys(currentDeal);
         dataAsArr.forEach((item) => {
-          if (!currentDeal[item]) return;
+          if (!currentDeal[item] || !currentDeal[item].item) return;
           if (currentDeal[item].item) {
             currentDeal[item] = {
               value: currentDeal[item].item.value,
