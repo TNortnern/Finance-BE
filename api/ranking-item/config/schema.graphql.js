@@ -42,45 +42,50 @@ module.exports = {
             });
           }
           // console.log("flatten(context.query._whereDeals)", dealsWhere);
-          const lookup = await strapi.query("ranking-item").model.aggregate([
-            {
-              $lookup: {
-                from: "rankings",
-                localField: "ranking",
-                foreignField: "_id",
-                as: "ranking",
-              },
-            },
-            { $match: flatten(context.query._whereRankings) },
-            { $unwind: "$ranking" },
-            {
-              $lookup: {
-                from: "deal_remakes",
-                localField: "deal_remakes",
-                foreignField: "_id",
-                as: "deal_remakes",
-              },
-            },
-            { $unwind: "$deal_remakes" },
-            { $match: dealsWhere || {} },
-            {
-              $group: {
-                _id: "$value",
-                value: { $first: "$value" },
-                ranking: { $first: "$ranking" },
-                total_amount: {
-                  $sum: { $toDouble: "$deal_remakes.Size_EUR.item.value" },
+          let lookup;
+          try {
+            lookup = await strapi.query("ranking-item").model.aggregate([
+              {
+                $lookup: {
+                  from: "rankings",
+                  localField: "ranking",
+                  foreignField: "_id",
+                  as: "ranking",
                 },
-                total_count: { $sum: 1 },
               },
-            },
-            {
-              $sort: { [context.query._sort]: -1 },
-            },
-            {
-              $limit: Number(context.query._limit) || 10,
-            },
-          ]);
+              { $match: flatten(context.query._whereRankings) },
+              { $unwind: "$ranking" },
+              {
+                $lookup: {
+                  from: "deal_remakes",
+                  localField: "deal_remakes",
+                  foreignField: "_id",
+                  as: "deal_remakes",
+                },
+              },
+              { $unwind: "$deal_remakes" },
+              { $match: dealsWhere || {} },
+              {
+                $group: {
+                  _id: "$value",
+                  value: { $first: "$value" },
+                  ranking: { $first: "$ranking" },
+                  total_amount: {
+                    $sum: { $toDouble: "$deal_remakes.Size_EUR.item.value" },
+                  },
+                  total_count: { $sum: 1 },
+                },
+              },
+              {
+                $sort: { [context.query._sort]: -1 },
+              },
+              {
+                $limit: Number(context.query._limit) || 10,
+              },
+            ]);
+          } catch (err) {
+            console.log('err', err)
+          }
           return lookup;
         },
       },
