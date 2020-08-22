@@ -31,7 +31,7 @@ module.exports = {
           const dealsWhere =
             (context.query._whereDeals &&
               context.query._whereDeals.deal_remakes) ||
-            null;
+            {};
           if (dealsWhere) {
             const dealsAsArr = Object.keys(dealsWhere);
             dealsAsArr.forEach((d) => {
@@ -41,7 +41,7 @@ module.exports = {
               delete dealsWhere[d];
             });
           }
-          // console.log("flatten(context.query._whereDeals)", dealsWhere);
+          dealsWhere['deal_remakes.approved'] = true
           let lookup;
           try {
             lookup = await strapi.query("ranking-item").model.aggregate([

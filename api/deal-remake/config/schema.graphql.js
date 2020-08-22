@@ -30,7 +30,7 @@ module.exports = {
           const limit = query._limit;
           let cursor = query._cursor || "";
           let hasMore = true;
-          const sort = query._sort ? query._sort : "-createdAt";
+          const sort = query._sort ? query._sort : "-Month.item.value";
           // removing these so that the query doesn't use them, instead they'll be used in custom ways
           delete query._limit;
           delete query._sort;
@@ -50,7 +50,7 @@ module.exports = {
           // console.log('query', query)
           const sortDesc = sort.charAt(0) === "-";
           const whereDisplay = cursor
-            ? "_id"
+            ? "Month.item.value"
             : sortDesc
             ? sort.substr(1)
             : sort;
@@ -70,6 +70,7 @@ module.exports = {
           };
           let deals;
           if (!cursor) {
+           
             deals = await strapi
               .query("deal-remake")
               .model.find(query)
@@ -97,8 +98,8 @@ module.exports = {
           const total = await strapi
             .query("deal-remake")
             .model.countDocuments(query);
-          nextCursor = (deals.length && deals[deals.length - 1]._id) || "";
-          prevCursor = (deals.length && deals[0]._id) || "";
+          nextCursor = (deals.length && deals[deals.length - 1].Month.item.value) || "";
+          prevCursor = (deals.length && deals[0].Month.item.value) || "";
           if (deals.find((each) => each.title === lastItem.title)) {
             hasMore = false;
             nextCursor = "";

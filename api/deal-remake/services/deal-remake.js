@@ -156,6 +156,15 @@ module.exports = {
           id: null,
         },
       },
+      Is_EBITDA_above_10m: {
+        item: {
+          value: (deal.Is_EBITDA_above_10m && deal.Is_EBITDA_above_10m.value) || null,
+          status:
+            (deal.Is_EBITDA_above_10m && deal.Is_EBITDA_above_10m.status) ||
+            null,
+          id: null,
+        },
+      },
       // Is_EBITDA_above_10m: {
       //   item: {
       //     value: dealData.EBITDA && dealData.EBITDA.value > 10 ? "Yes" : "No",
@@ -207,6 +216,13 @@ module.exports = {
             item: {
               value: (deal.Size_EUR && deal.Size_EUR.value) || 0,
               status: (deal.Size_EUR && deal.Size_EUR.status) || null,
+              id: null,
+            },
+          },
+          Is_EBITDA_above_10m: {
+            item: {
+              value: (deal.Is_EBITDA_above_10m && deal.Is_EBITDA_above_10m.value) || null,
+              status: (deal.Is_EBITDA_above_10m && deal.Is_EBITDA_above_10m.status) || null,
               id: null,
             },
           },
