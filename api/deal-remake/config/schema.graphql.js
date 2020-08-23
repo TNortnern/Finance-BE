@@ -61,10 +61,10 @@ module.exports = {
               return;
             } else {
               if (sortDesc) {
-                oppositeSort = "gt";
+                oppositeSort = "Month.item.value";
                 return "lt";
               }
-              oppositeSort = "lt";
+              oppositeSort = "-Month.item.value";
               return "gt";
             }
           };
@@ -79,7 +79,8 @@ module.exports = {
             lastItem = await strapi
               .query("deal-remake")
               .model.findOne(query)
-              .sort(oppositeSort);
+              .sort(oppositeSort)
+              .limit(1)
           } else {
             deals = await strapi
               .query("deal-remake")
@@ -92,15 +93,20 @@ module.exports = {
               .query("deal-remake")
               .model.findOne(query)
               .sort(oppositeSort)
-              .where(whereDisplay)
-              [handleOrder()](cursor);
           }
           const total = await strapi
             .query("deal-remake")
             .model.countDocuments(query);
           nextCursor = (deals.length && deals[deals.length - 1].Month.item.value) || "";
           prevCursor = (deals.length && deals[0].Month.item.value) || "";
-          if (deals.find((each) => each.title === lastItem.title)) {
+          // console.log('lastItem', lastItem)
+          // console.log('lastItem._id', lastItem._id)
+          // console.log("object", deals.map(it => it._id));
+          // console.log(
+          //   "foundit?",
+          //   deals.find((ea) => ea._id.toString() == lastItem._id.toString())
+          // );
+          if (deals.find((each) => each._id.toString() === lastItem._id.toString())) {
             hasMore = false;
             nextCursor = "";
           }
