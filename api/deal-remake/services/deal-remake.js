@@ -159,9 +159,9 @@ module.exports = {
       },
       Is_EBITDA_above_10m: {
         item: {
-          value: (deal.Is_EBITDA_above_10m && deal.Is_EBITDA_above_10m.value) || null,
+          value: (dealData.Is_EBITDA_above_10m && dealData.Is_EBITDA_above_10m.value) || null,
           status:
-            (deal.Is_EBITDA_above_10m && deal.Is_EBITDA_above_10m.status) ||
+            (dealData.Is_EBITDA_above_10m && dealData.Is_EBITDA_above_10m.status) ||
             null,
           id: null,
         },
