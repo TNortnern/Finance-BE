@@ -98,6 +98,7 @@ const handleDeal = async (dealData) => {
 
 module.exports = {
   baseCreateDealRemake: async (dealData, title, approved, author) => {
+    if (!dealData) return
     const getUser = await strapi
       .query("user", "users-permissions")
       .findOne({ _id: author });
