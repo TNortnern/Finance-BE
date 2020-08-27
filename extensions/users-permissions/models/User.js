@@ -31,7 +31,7 @@ module.exports = {
               console.log("Your user received an email");
             })
             .catch((error) => {
-              console.error("An error occurred:");
+              console.error("An error occurred:", error.response.data);
             });
         }
       }
