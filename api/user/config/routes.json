@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/send-confirm",
+      "handler": "confirm.send",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

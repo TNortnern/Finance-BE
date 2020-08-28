@@ -20,13 +20,23 @@ module.exports = {
             .update({ id: params._id }, { views_left: defaults.view_count });
         }
         if (!data.confirmed) {
+          let url;
+          if ((process.env.NODE_ENV || '').trim() !== 'production') {
+            url = 'https://privatedebtdeals.herokuapp.com'
+          } else {
+            url = 'http://localhost:1337'
+          }
           await axios
-            .post(
-              `https://finance-strapi-cms.herokuapp.com/auth/send-email-confirmation`,
-              {
-                email: user.email, // user's email
-              }
-            )
+            .post(`${url}/send-confirm`, {
+              email: user.email, // user's email
+              to: user.email,
+              from: {
+                email: process.env.EMAIL_FROM,
+              },
+              reply_to: {
+                email: process.env.EMAIL_FROM,
+              },
+            })
             .then((response) => {
               console.log("Your user received an email");
             })
