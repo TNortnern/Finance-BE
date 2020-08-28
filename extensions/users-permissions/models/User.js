@@ -24,7 +24,7 @@ module.exports = {
           if ((process.env.NODE_ENV || '').trim() !== 'production') {
             url = 'https://privatedebtdeals.herokuapp.com'
           } else {
-            url = 'http://localhost:1337'
+            url = 'https://privatedebtdeals.herokuapp.com'
           }
           await axios
             .post(`${url}/send-confirm`, {
