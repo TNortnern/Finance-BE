@@ -71,10 +71,6 @@
     "name": {
       "type": "string"
     },
-    "deal": {
-      "model": "deal",
-      "via": "author"
-    },
     "deal_remakes": {
       "collection": "deal-remake",
       "via": "author"

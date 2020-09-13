@@ -1262,43 +1262,6 @@
           "name": {
             "type": "string"
           },
-          "deal": {
-            "required": [
-              "id"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "title": {
-                "type": "string"
-              },
-              "approved": {
-                "type": "boolean"
-              },
-              "author": {
-                "type": "string"
-              },
-              "rankings": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "size": {
-                "type": "integer"
-              },
-              "filters": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "comments": {
-                "type": "string"
-              }
-            }
-          },
           "deal_remakes": {
             "type": "array",
             "items": {
@@ -1469,9 +1432,6 @@
             "default": 0
           },
           "name": {
-            "type": "string"
-          },
-          "deal": {
             "type": "string"
           },
           "deal_remakes": {

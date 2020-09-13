@@ -557,46 +557,6 @@
               }
             }
           },
-          "deals": {
-            "type": "array",
-            "items": {
-              "required": [
-                "id"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "approved": {
-                  "type": "boolean"
-                },
-                "author": {
-                  "type": "string"
-                },
-                "rankings": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "size": {
-                  "type": "integer"
-                },
-                "filters": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "comments": {
-                  "type": "string"
-                }
-              }
-            }
-          },
           "status": {
             "required": [
               "id"
@@ -625,12 +585,6 @@
           },
           "filter": {
             "type": "string"
-          },
-          "deals": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           },
           "status": {
             "type": "string"

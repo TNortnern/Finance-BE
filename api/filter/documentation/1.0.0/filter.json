@@ -541,12 +541,6 @@
                 "filter": {
                   "type": "string"
                 },
-                "deals": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
                 "status": {
                   "type": "string"
                 }

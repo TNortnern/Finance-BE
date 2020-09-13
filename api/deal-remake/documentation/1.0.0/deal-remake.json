@@ -587,9 +587,6 @@
               "name": {
                 "type": "string"
               },
-              "deal": {
-                "type": "string"
-              },
               "deal_remakes": {
                 "type": "array",
                 "items": {

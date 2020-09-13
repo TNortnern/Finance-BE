@@ -12,11 +12,6 @@
     "name": {
       "type": "string"
     },
-    "deals": {
-      "collection": "deal",
-      "via": "rankings",
-      "dominant": true
-    },
     "items": {
       "via": "ranking",
       "collection": "ranking-item"

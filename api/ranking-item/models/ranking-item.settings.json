@@ -17,10 +17,6 @@
       "model": "ranking",
       "via": "items"
     },
-    "deals": {
-      "collection": "deal",
-      "via": "rankings"
-    },
     "deal_remakes": {
       "collection": "deal-remake"
     }

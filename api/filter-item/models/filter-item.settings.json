@@ -15,11 +15,6 @@
     "filter": {
       "model": "filter"
     },
-    "deals": {
-      "via": "filters",
-      "collection": "deal",
-      "dominant": true
-    },
     "status": {
       "model": "status-types",
       "via": "filters"
